@@ -53,16 +53,22 @@ function SkillList() {
 }
 
 function Skill({ name, level, color }) {
-  const emojiByLevel = {
-    beginner: '👶',
-    intermediate: '👍',
-    advanced: '💪',
-  }
+  // const emojiByLevel = {
+  //   beginner: '👶',
+  //   intermediate: '👍',
+  //   advanced: '💪',
+  // }
 
   return (
     <li className="skill" style={{ backgroundColor: color }}>
       <span>{name}</span>
-      <span>{emojiByLevel[level]}</span>
+      {/* <span>{emojiByLevel[level]}</span> */}
+
+      <span>
+        {level === 'beginner' && '👶'}
+        {level === 'intermediate' && '👍'}
+        {level === 'advanced' && '💪'}
+      </span>
     </li>
   )
 }
