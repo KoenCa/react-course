@@ -73,11 +73,17 @@ function Menu() {
       <h2>Our menu</h2>
 
       {pizzas.length > 0 ? (
-        <ul className="pizzas">
-          {pizzas.map(pizza => (
-            <Pizza key={pizza.name} pizzaObject={pizza} />
-          ))}
-        </ul>
+        <>
+          <p>
+            Authentic italian pizza, made with love and passion. Choose your
+            pizza.
+          </p>
+          <ul className="pizzas">
+            {pizzas.map(pizza => (
+              <Pizza key={pizza.name} pizzaObject={pizza} />
+            ))}
+          </ul>
+        </>
       ) : (
         <p>We're still working on our menu. Please come back later :)</p>
       )}
