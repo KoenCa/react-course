@@ -1,3 +1,11 @@
+const skills = [
+  { name: 'HTML/CSS/JS', level: 'advanced', color: '#e34c26' },
+  { name: 'Vue 3', level: 'advanced', color: 'green' },
+  { name: 'Nuxt 3', level: 'advanced', color: 'green' },
+  { name: 'TailwindCSS', level: 'intermediate', color: 'lightblue' },
+  { name: 'React', level: 'beginner', color: 'lightblue' },
+]
+
 function App() {
   return (
     <div className="card">
@@ -8,7 +16,7 @@ function App() {
         <SkillList />
       </div>
     </div>
-  );
+  )
 }
 
 function Avatar() {
@@ -18,7 +26,7 @@ function Avatar() {
       alt="avatar"
       className="avatar"
     />
-  );
+  )
 }
 
 function Intro() {
@@ -26,28 +34,37 @@ function Intro() {
     <div>
       <h1>Koen Castermans</h1>
       <p>
-        Front-end web developer at Wisemen. Has experience across the full stack.
-        In his free time he likes to work out, ride his bike and play video games.
+        Front-end web developer at Wisemen. Has experience across the full
+        stack. In his free time he likes to work out, ride his bike and play
+        video games.
       </p>
     </div>
-  );
+  )
 }
 
 function SkillList() {
-  return <ul className="skill-list">
-    <Skill name="HTML/CSS/JS" emoji="💪" color="#e34c26" />
-    <Skill name="Vue 3" emoji="💪" color="green" />
-    <Skill name="Nuxt 3" emoji="💪" color="green" />
-    <Skill name="TailwindCSS" emoji="💪" color="lightblue" />
-    <Skill name="React" emoji="👍" color="lightblue" />
-  </ul>
+  return (
+    <ul className="skill-list">
+      {skills.map(skill => (
+        <Skill {...skill} />
+      ))}
+    </ul>
+  )
 }
 
-function Skill({name, emoji, color}) {
-  return <li className="skill" style={{backgroundColor: color}}>
-    <span>{name}</span>
-    <span>{emoji}</span>
-  </li>
+function Skill({ name, level, color }) {
+  const emojiByLevel = {
+    beginner: '👶',
+    intermediate: '👍',
+    advanced: '💪',
+  }
+
+  return (
+    <li className="skill" style={{ backgroundColor: color }}>
+      <span>{name}</span>
+      <span>{emojiByLevel[level]}</span>
+    </li>
+  )
 }
 
-export default App;
+export default App
