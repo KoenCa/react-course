@@ -85,7 +85,11 @@ function Menu() {
   )
 }
 
-function Pizza({ pizzaObject: { name, ingredients, photoName, price } }) {
+function Pizza({
+  pizzaObject: { name, ingredients, photoName, price, soldOut },
+}) {
+  if (soldOut) return null
+
   return (
     <li className="pizza">
       <img src={photoName} alt={name} />
