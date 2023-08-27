@@ -4,16 +4,6 @@ export default function App() {
   const [step, setStep] = useState(1)
   const [count, setCount] = useState(0)
 
-  function handleStepMinus() {
-    if (step <= 1) return
-
-    setStep(currentStep => currentStep - 1)
-  }
-
-  function handleStepPlus() {
-    setStep(currentStep => currentStep + 1)
-  }
-
   function handleCountMinus() {
     setCount(currentCount => currentCount - step)
   }
@@ -22,23 +12,45 @@ export default function App() {
     setCount(currentCount => currentCount + step)
   }
 
+  function handleReset() {
+    setStep(1)
+    setCount(0)
+  }
+
   return (
     <div>
       <div>
-        <button onClick={handleStepMinus}> - </button>
-        <span>Step: {step}</span>
-        <button onClick={handleStepPlus}> + </button>
+        <span>
+          Step:{' '}
+          <input
+            type="range"
+            min={0}
+            step={1}
+            value={step}
+            onChange={e => setStep(e.target.valueAsNumber)}
+          />{' '}
+          {step}
+        </span>
       </div>
 
       <div>
-        <button onClick={handleCountMinus}> - </button>
-        <span>Count: {count}</span>
+        Count:{' '}
+        <button onClick={handleCountMinus}> - </button>{' '}
+        <input
+          type="number"
+          value={count}
+          onChange={e => setCount(e.target.valueAsNumber)}
+        />{' '}
         <button onClick={handleCountPlus}> + </button>
       </div>
 
       <p>
-        <DaysFromToday step={step} count={count} />
+        <DaysFromToday count={count} />
       </p>
+
+      {(step !== 1 || count !== 0) && (
+        <button onClick={handleReset}>Reset</button>
+      )}
     </div>
   )
 }
