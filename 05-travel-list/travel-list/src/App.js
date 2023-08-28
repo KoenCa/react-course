@@ -15,11 +15,15 @@ export default function App() {
     setItems(items => [...items, newItem])
   }
 
+  function handleDeleteItem(id) {
+    setItems(items => items.filter(item => item.id !== id))
+  }
+
   return (
     <div className="app">
       <Logo />
       <Form onAddItems={handleAddItems} />
-      <PackingList items={items} />
+      <PackingList items={items} onDeleteItem={handleDeleteItem} />
       <Stats />
     </div>
   )
@@ -75,25 +79,29 @@ function Form({ onAddItems }) {
   )
 }
 
-function PackingList({ items }) {
+function PackingList({ items, onDeleteItem }) {
   return (
     <div className="list">
       <ul>
         {items.map(item => (
-          <Item key={item.id} item={item} />
+          <Item key={item.id} item={item} onDeleteItem={onDeleteItem} />
         ))}
       </ul>
     </div>
   )
 }
 
-function Item({ item: { description, quantity, packed } }) {
+function Item({ item: { id, description, quantity, packed }, onDeleteItem }) {
+  function handleDeleteItem() {
+    onDeleteItem(id)
+  }
+
   return (
     <li>
       <span style={packed ? { textDecoration: 'line-through' } : {}}>
         {quantity} {description}
       </span>
-      <button>❌</button>
+      <button onClick={handleDeleteItem}>❌</button>
     </li>
   )
 }
