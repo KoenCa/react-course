@@ -36,12 +36,8 @@ export default function App() {
       >
         How did your friend like the service?
       </ServicePercentage>
-      <Result
-        total={total}
-        bill={bill}
-        tip={tip}
-      />
-      <Reset onReset={handleReset} />
+      <Result total={total} bill={bill} tip={tip} />
+      {bill && <Reset onReset={handleReset} />}
     </div>
   )
 }
