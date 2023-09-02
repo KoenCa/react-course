@@ -9,6 +9,10 @@ export default function App() {
   const [myPercentage, setMyPercentage] = useState(0)
   const [friendPercentage, setFriendPercentage] = useState(0)
 
+  const averagePercentage = (myPercentage + friendPercentage) / 2
+  const tip = bill * (averagePercentage / 100)
+  const total = bill + tip
+
   function handleReset() {
     setBill('')
     setMyPercentage(0)
@@ -33,9 +37,9 @@ export default function App() {
         How did your friend like the service?
       </ServicePercentage>
       <Result
+        total={total}
         bill={bill}
-        myPercentage={myPercentage}
-        friendPercentage={friendPercentage}
+        tip={tip}
       />
       <Reset onReset={handleReset} />
     </div>
