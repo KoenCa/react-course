@@ -25,25 +25,46 @@ export default function App() {
 }
 
 function Accordion({ data }) {
+  const [currOpen, setCurrOpen] = useState(null)
+
   return (
     <div className="accordion">
-      {faqs.map((faq, index) => (
+      {data.map((faq, index) => (
         <AccordionItem
           key={faq.title}
           number={index}
           title={faq.title}
-          text={faq.text}
-        />
+          currOpen={currOpen}
+          onOpen={setCurrOpen}
+        >
+          {faq.text}
+        </AccordionItem>
       ))}
+
+      <AccordionItem
+        number={22}
+        title={'Thinking in React'}
+        currOpen={currOpen}
+        onOpen={setCurrOpen}
+      >
+        <p>Allows React developers to:</p>
+        <ul>
+          <li>Break UI into components</li>
+          <li>Build a static version of the app</li>
+          <li>Identify the minimal (but complete) representation of UI state</li>
+          <li>Identify where your state should live</li>
+          <li>Add inverse data flow</li>
+        </ul>
+      </AccordionItem>
     </div>
   )
 }
 
-function AccordionItem({ number, title, text }) {
-  const [isOpen, setIsOpen] = useState(false)
+function AccordionItem({ children, number, title, currOpen, onOpen }) {
+  const isOpen = currOpen === number
 
   function handleToggle() {
-    setIsOpen(isOpen => !isOpen)
+    onOpen(isOpen ? null : number)
   }
 
   return (
@@ -52,7 +73,7 @@ function AccordionItem({ number, title, text }) {
       <p className="title">{title}</p>
       <p className="icon">{isOpen ? '-' : '+'}</p>
 
-      {isOpen && <div className="content-box">{text}</div>}
+      {isOpen && <div className="content-box">{children}</div>}
     </div>
   )
 }
