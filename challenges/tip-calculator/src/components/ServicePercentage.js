@@ -10,7 +10,7 @@ export function ServicePercentage({
 
   return (
     <section>
-      <label htmlFor="servicePercentage">
+      <label>
         {children}
         <select
           name="servicePercentage"

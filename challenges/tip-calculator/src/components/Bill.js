@@ -6,7 +6,7 @@ export function Bill({ bill, onBillChange }) {
 
   return (
     <section>
-      <label htmlFor="bill">
+      <label>
         How much was the bill?
         <input type="number" value={bill} onChange={handleBillChange} />
       </label>
