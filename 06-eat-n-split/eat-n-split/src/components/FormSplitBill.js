@@ -1,16 +1,24 @@
 import { useState } from 'react'
 import { Button } from './Button'
 
-export function FormSplitBill({ selectedFriend }) {
+export function FormSplitBill({ selectedFriend, onSplitBill }) {
   const [bill, setBill] = useState('')
   const [paidByUser, setPaidByUser] = useState('')
-  const [whoIsPaying, setWhoIsPaying] = useState('users')
+  const [whoIsPaying, setWhoIsPaying] = useState('user')
 
   const paidByFriend = bill ? bill - paidByUser : ''
 
   function handlePaidByUserChange(e) {
     const value = Number(e.target.value)
     setPaidByUser(value > bill ? paidByUser : value)
+  }
+
+  function handleSubmit(e) {
+    e.preventDefault()
+
+    if (!bill || !paidByUser) return
+
+    onSplitBill(whoIsPaying === 'user' ? paidByFriend : -paidByUser)
   }
 
   return (
@@ -39,7 +47,7 @@ export function FormSplitBill({ selectedFriend }) {
         <option value="friend">{selectedFriend.name}</option>
       </select>
 
-      <Button>Split bill</Button>
+      <Button onClick={handleSubmit}>Split bill</Button>
     </form>
   )
 }
