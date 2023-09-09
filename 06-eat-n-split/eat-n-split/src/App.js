@@ -1,3 +1,5 @@
+import { FriendsList } from "./components/FriendsList";
+
 const initialFriends = [
   {
     id: 118836,
@@ -23,7 +25,9 @@ const initialFriends = [
 export default function App() {
   return (
     <div className="app">
-
+      <div className="sidebar">
+        <FriendsList friends={initialFriends} />
+      </div>
     </div>
   );
 }
