@@ -1,4 +1,6 @@
-import './styles.css';
+import { useState } from 'react'
+import './styles.css'
+import PropTypes from 'prop-types'
 
 function App() {
   return (
@@ -34,8 +36,49 @@ function App() {
   )
 }
 
-function TextExpander({ child }) {
-  return <div>{child}</div>
+TextExpander.propTypes = {
+  collapsedNumWords: PropTypes.number,
+  expandButtonText: PropTypes.string,
+  collapseButtonText: PropTypes.string,
+  buttonColor: PropTypes.string,
+  expanded: PropTypes.bool,
+  className: PropTypes.string,
+}
+
+function TextExpander({
+  collapsedNumWords = 10,
+  expandButtonText = 'Show more',
+  collapseButtonText = 'Show less',
+  buttonColor = 'blue',
+  expanded = false,
+  className = '',
+  children,
+}) {
+  const [isExpanded, setIsExpanded] = useState(expanded)
+
+  const buttonStyles = {
+    color: buttonColor,
+    cursor: 'pointer',
+  }
+  const buttonText = isExpanded ? collapseButtonText : expandButtonText
+
+  const words = children.split(' ')
+  const textToDisplay = isExpanded
+    ? `${children} `
+    : `${words.slice(0, collapsedNumWords).join(' ')}... `
+
+  function handleBtnClick() {
+    setIsExpanded(currIsExpanded => !currIsExpanded)
+  }
+
+  return (
+    <div className={className}>
+      {textToDisplay}
+      <span style={buttonStyles} onClick={handleBtnClick}>
+        {buttonText}
+      </span>
+    </div>
+  )
 }
 
 export default App
