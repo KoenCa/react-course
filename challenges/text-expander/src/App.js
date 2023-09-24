@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 function App() {
   return (
     <div>
-      <TextExpander buttonColor="purple" className='box'>
+      <TextExpander buttonColor="purple" className="box">
         Space travel is the ultimate adventure! Imagine soaring past the stars
         and exploring new worlds. It's the stuff of dreams and science fiction,
         but believe it or not, space travel is a real thing. Humans and robots
@@ -18,7 +18,7 @@ function App() {
         expandButtonText="Show text"
         collapseButtonText="Collapse text"
         buttonColor="#ff6622"
-        className='box'
+        className="box"
       >
         Space travel requires some seriously amazing technology and
         collaboration between countries, private companies, and international
