@@ -10,12 +10,13 @@ export default function App() {
   const [watched, setWatched] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
-  const query = 'eweqaefew'
+  const [query, setQuery] = useState('')
 
   useEffect(() => {
     async function fetchMovies() {
       try {
         setIsLoading(true)
+        setError('')
 
         const res = await fetch(
           `http://www.omdbapi.com/?apikey=${APIkey}&s=${query}`
@@ -36,19 +37,24 @@ export default function App() {
       }
     }
 
+    if (query.length < 3) {
+      setMovies([])
+      setError('')
+      return
+    }
+
     fetchMovies()
-  }, [])
+  }, [query])
 
   return (
     <>
       <NavBar>
-        <Search />
+        <Search query={query} setQuery={setQuery} />
         <NumResults movies={movies} />
       </NavBar>
 
       <Main>
         <Box>
-          {/* {isLoading ? <Loader /> : <MovieList movies={movies} />} */}
           {isLoading && !error && <Loader />}
           {!isLoading && !error && <MovieList movies={movies} />}
           {error && <ErrorMessage errorMsg={error} />}
@@ -93,9 +99,7 @@ function Logo() {
   )
 }
 
-function Search() {
-  const [query, setQuery] = useState('')
-
+function Search({ query, setQuery }) {
   return (
     <input
       className="search"
