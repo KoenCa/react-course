@@ -55,6 +55,16 @@ export function MovieDetails({
     getMovieDetails()
   }, [selectedId])
 
+  useEffect(() => {
+    if (!title) return
+
+    document.title = `Movie | ${title}`
+
+    return () => {
+      document.title = 'usePopcorn'
+    }
+  }, [title])
+
   function handleAddWatched() {
     const watchedMovie = {
       id: selectedId,
@@ -96,8 +106,7 @@ export function MovieDetails({
             <div className="rating">
               {watchedMovieRating ? (
                 <p>
-                  You rated this movie: {' '}
-                  <span>{watchedMovieRating}</span>
+                  You rated this movie: <span>{watchedMovieRating}</span>
                   <span>🌟</span>
                 </p>
               ) : (
