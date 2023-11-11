@@ -1,40 +1,74 @@
-import { useState, useEffect } from 'react';
-import { StarRating } from './StarRating';
-import { Loader } from './Loader';
-import { API_KEY } from '../constants';
+import { useState, useEffect } from 'react'
+import { StarRating } from './StarRating'
+import { Loader } from './Loader'
+import { API_KEY } from '../constants'
 
-export function MovieDetails({ selectedId, onCloseMovie }) {
-  const [movie, setMovie] = useState({});
-  const [isLoading, setIsLoading] = useState(false);
+export function MovieDetails({
+  selectedId,
+  watchedMovies,
+  onCloseMovie,
+  onAddWatched,
+}) {
+  const [movie, setMovie] = useState({})
+  const [isLoading, setIsLoading] = useState(false)
+  const [userRating, setUserRating] = useState('')
 
   const {
-    Title: title, Year: year, Poster: poster, Runtime: runtime, imdbRating, Plot: plot, Released: released, Actors: actors, Director: director, Genre: genre,
-  } = movie;
+    Title: title,
+    Year: year,
+    Poster: poster,
+    Runtime: runtime,
+    imdbRating,
+    Plot: plot,
+    Released: released,
+    Actors: actors,
+    Director: director,
+    Genre: genre,
+  } = movie
+
+  const watchedMovieRating = watchedMovies.find(
+    movie => movie.id === selectedId
+  )?.userRating
 
   useEffect(() => {
     async function getMovieDetails() {
       try {
-        setIsLoading(true);
+        setIsLoading(true)
 
         const res = await fetch(
           `http://www.omdbapi.com/?apikey=${API_KEY}&i=${selectedId}`
-        );
+        )
 
         if (!res.ok)
-          throw new Error('Something went wrong with fetching movie details');
+          throw new Error('Something went wrong with fetching movie details')
 
-        const data = await res.json();
+        const data = await res.json()
 
-        setMovie(data);
+        setMovie(data)
       } catch (error) {
-        console.error(error);
+        console.error(error)
       } finally {
-        setIsLoading(false);
+        setIsLoading(false)
       }
     }
 
-    getMovieDetails();
-  }, [selectedId]);
+    getMovieDetails()
+  }, [selectedId])
+
+  function handleAddWatched() {
+    const watchedMovie = {
+      id: selectedId,
+      title,
+      year,
+      poster,
+      imdbRating: Number(imdbRating),
+      userRating: Number(userRating),
+      runtime: Number(runtime.split(' ').at(0)),
+    }
+
+    onAddWatched(watchedMovie)
+    onCloseMovie()
+  }
 
   return (
     <div className="details">
@@ -60,7 +94,26 @@ export function MovieDetails({ selectedId, onCloseMovie }) {
           </header>
           <section>
             <div className="rating">
-              <StarRating maxRating={10} size={24} />
+              {watchedMovieRating ? (
+                <p>
+                  You rated this movie: {' '}
+                  <span>{watchedMovieRating}</span>
+                  <span>🌟</span>
+                </p>
+              ) : (
+                <>
+                  <StarRating
+                    maxRating={10}
+                    size={24}
+                    onSetRating={setUserRating}
+                  />
+                  {userRating > 0 && (
+                    <button className="btn-add" onClick={handleAddWatched}>
+                      + Add to MovieList
+                    </button>
+                  )}
+                </>
+              )}
             </div>
             <p>
               <em>{plot}</em>
@@ -71,5 +124,5 @@ export function MovieDetails({ selectedId, onCloseMovie }) {
         </>
       )}
     </div>
-  );
+  )
 }

@@ -12,13 +12,12 @@ import { WatchedSummary } from './components/WatchedSummary'
 import { WatchedMovieList } from './components/WatchedMovieList'
 import { API_KEY } from './constants'
 
-
 export default function App() {
   const [movies, setMovies] = useState([])
-  const [watched, setWatched] = useState([])
+  const [watchedMovies, setWatchedMovies] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState('Inception')
   const [selectedId, setSelectedId] = useState(null)
 
   useEffect(() => {
@@ -64,7 +63,11 @@ export default function App() {
   }
 
   function handleAddWatched(movie) {
-    setWatched(watched => [...watched, movie])
+    setWatchedMovies(watched => [...watched, movie])
+  }
+
+  function handleDeleteWatched(id) {
+    setWatchedMovies(watched => watched.filter(movie => movie.id !== id))
   }
 
   return (
@@ -86,12 +89,17 @@ export default function App() {
           {selectedId ? (
             <MovieDetails
               selectedId={selectedId}
+              watchedMovies={watchedMovies}
               onCloseMovie={handleCloseMovie}
+              onAddWatched={handleAddWatched}
             />
           ) : (
             <>
-              <WatchedSummary watched={watched} />
-              <WatchedMovieList watched={watched} />
+              <WatchedSummary watched={watchedMovies} />
+              <WatchedMovieList
+                watched={watchedMovies}
+                onDeleteWatched={handleDeleteWatched}
+              />
             </>
           )}
         </Box>
