@@ -31,12 +31,22 @@ export function MovieDetails({
   )?.userRating
 
   useEffect(() => {
+    function handleEscape(e) {
+      if (e.code === 'Escape') onCloseMovie()
+    }
+
+    window.addEventListener('keydown', handleEscape)
+
+    return () => window.removeEventListener('keydown', handleEscape)
+  }, [onCloseMovie])
+
+  useEffect(() => {
     async function getMovieDetails() {
       try {
         setIsLoading(true)
 
         const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${API_KEY}&i=${selectedId}`,
+          `http://www.omdbapi.com/?apikey=${API_KEY}&i=${selectedId}`
         )
 
         if (!res.ok)
