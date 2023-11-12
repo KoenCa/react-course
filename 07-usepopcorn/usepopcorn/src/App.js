@@ -17,7 +17,7 @@ export default function App() {
   const [watchedMovies, setWatchedMovies] = useState([])
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
-  const [query, setQuery] = useState('Inception')
+  const [query, setQuery] = useState('')
   const [selectedId, setSelectedId] = useState(null)
 
   useEffect(() => {
@@ -57,6 +57,7 @@ export default function App() {
       return
     }
 
+    handleCloseMovie()
     fetchMovies()
 
     return () => abortController.abort()
