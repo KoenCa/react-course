@@ -26,17 +26,18 @@ function App() {
         if (!response.ok) throw new Error(data.message)
 
         setResult(data.rates[toCurrency])
+        setIsFetching(false)
       } catch (error) {
         if (error.name === 'AbortError') return
 
-        setError(error.message)
-      } finally {
         setIsFetching(false)
+        setError(error.message)
       }
     }
 
     if (!amount) {
       setResult('')
+      setIsFetching(false)
       return
     }
 
@@ -78,7 +79,10 @@ function App() {
         <option value="CAD">CAD</option>
         <option value="INR">INR</option>
       </select>
-      {error ? <p>{error}</p> : <p>{isFetching ? 'Loading...' : result}</p>}
+
+      {isFetching && !error && <p>Loading...</p>}
+      {!isFetching && !error && <p>{result}</p>}
+      {error && <p>{error}</p>}
     </div>
   )
 }
