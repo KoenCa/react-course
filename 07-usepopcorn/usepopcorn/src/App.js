@@ -14,7 +14,10 @@ import { API_KEY } from './constants'
 
 export default function App() {
   const [movies, setMovies] = useState([])
-  const [watchedMovies, setWatchedMovies] = useState([])
+  const [watchedMovies, setWatchedMovies] = useState(() => {
+    const storedWatchedMovies = localStorage.getItem('watchedMovies')
+    return storedWatchedMovies ? JSON.parse(storedWatchedMovies) : []
+  })
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState(null)
   const [query, setQuery] = useState('')
@@ -62,6 +65,10 @@ export default function App() {
 
     return () => abortController.abort()
   }, [query])
+
+  useEffect(() => {
+    localStorage.setItem('watchedMovies', JSON.stringify(watchedMovies))
+  }, [watchedMovies])
 
   function handleSelectMovie(id) {
     setSelectedId(selectedId => (selectedId === id ? null : id))
