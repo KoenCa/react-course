@@ -10,61 +10,16 @@ import { MovieList } from './components/MovieList'
 import { MovieDetails } from './components/MovieDetails'
 import { WatchedSummary } from './components/WatchedSummary'
 import { WatchedMovieList } from './components/WatchedMovieList'
-import { API_KEY } from './constants'
+import { useMovies } from './hooks/useMovies'
 
 export default function App() {
-  const [movies, setMovies] = useState([])
   const [watchedMovies, setWatchedMovies] = useState(() => {
     const storedWatchedMovies = localStorage.getItem('watchedMovies')
     return storedWatchedMovies ? JSON.parse(storedWatchedMovies) : []
   })
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState(null)
   const [query, setQuery] = useState('')
   const [selectedId, setSelectedId] = useState(null)
-
-  useEffect(() => {
-    const abortController = new AbortController()
-
-    async function fetchMovies() {
-      try {
-        setIsLoading(true)
-        setError('')
-
-        const res = await fetch(
-          `http://www.omdbapi.com/?apikey=${API_KEY}&s=${query}`,
-          { signal: abortController.signal }
-        )
-
-        if (!res.ok)
-          throw new Error('Something went wrong with fetching movies')
-
-        const data = await res.json()
-
-        if (data.Response === 'False') throw new Error('Movie not found')
-
-        setMovies(data?.Search || [])
-        setError('')
-      } catch (error) {
-        if (error.name === 'AbortError') return
-
-        setError(error.message)
-      } finally {
-        setIsLoading(false)
-      }
-    }
-
-    if (query.length < 3) {
-      setMovies([])
-      setError('')
-      return
-    }
-
-    handleCloseMovie()
-    fetchMovies()
-
-    return () => abortController.abort()
-  }, [query])
+  const { movies, isLoading, error } = useMovies(query)
 
   useEffect(() => {
     localStorage.setItem('watchedMovies', JSON.stringify(watchedMovies))
