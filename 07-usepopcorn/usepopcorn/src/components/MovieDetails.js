@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { StarRating } from './StarRating'
 import { Loader } from './Loader'
 import { API_KEY } from '../constants'
+import { useKey } from '../hooks/useKey'
 
 export function MovieDetails({
   selectedId,
@@ -32,19 +33,11 @@ export function MovieDetails({
     movie => movie.id === selectedId
   )?.userRating
 
+  useKey('Escape', onCloseMovie)
+
   useEffect(() => {
     if (userRating) countRef.current++
   }, [userRating])
-
-  useEffect(() => {
-    function handleEscape(e) {
-      if (e.code === 'Escape') onCloseMovie()
-    }
-
-    window.addEventListener('keydown', handleEscape)
-
-    return () => window.removeEventListener('keydown', handleEscape)
-  }, [onCloseMovie])
 
   useEffect(() => {
     async function getMovieDetails() {
