@@ -4,6 +4,7 @@ import Main from './components/Main'
 import Loader from './components/Loader'
 import Error from './components/Error'
 import StartScreen from './components/StartScreen'
+import Question from './components/Question'
 
 const initialState = {
   questions: [],
@@ -11,7 +12,7 @@ const initialState = {
 }
 
 function reducer(state, action) {
-  switch (action.type) {
+  switch (action?.type) {
     case 'dataReceived':
       return {
         ...state,
@@ -23,13 +24,18 @@ function reducer(state, action) {
         ...state,
         status: 'error',
       }
+    case 'start':
+      return {
+        ...state,
+        status: 'active',
+      }
     default:
       throw new Error(`Unhandled action type: ${action.type}`)
   }
 }
 
 export default function App() {
-  const [{questions, status}, dispatch] = useReducer(reducer, initialState)
+  const [{ questions, status }, dispatch] = useReducer(reducer, initialState)
 
   const numQuestions = questions.length
 
@@ -53,7 +59,10 @@ export default function App() {
       <Main>
         {status === 'loading' && <Loader />}
         {status === 'error' && <Error />}
-        {status === 'ready' && <StartScreen numQuestions={numQuestions} />}
+        {status === 'ready' && (
+          <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
+        )}
+        {status === 'active' && <Question />}
       </Main>
     </div>
   )
