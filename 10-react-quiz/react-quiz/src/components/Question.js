@@ -1,3 +1,10 @@
-export default function Question() {
-  return <p>Question</p>
+import QuestionOptions from './QuestionOptions'
+
+export default function Question({ question }) {
+  return (
+    <div>
+      <h4>{question.question}</h4>
+      <QuestionOptions question={question} />
+    </div>
+  )
 }
