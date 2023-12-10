@@ -10,6 +10,8 @@ const initialState = {
   questions: [],
   status: 'loading', // 'loading', 'error', 'ready', 'active', 'finished'
   index: 0,
+  answer: null,
+  points: 0,
 }
 
 function reducer(state, action) {
@@ -30,13 +32,27 @@ function reducer(state, action) {
         ...state,
         status: 'active',
       }
+    case 'newAnswer':
+      const currentQuestion = state.questions[state.index]
+
+      return {
+        ...state,
+        answer: action.payload,
+        points:
+          action.payload === currentQuestion.correctOption
+            ? state.points + currentQuestion.points
+            : state.points,
+      }
     default:
       throw new Error(`Unhandled action type: ${action.type}`)
   }
 }
 
 export default function App() {
-  const [{ questions, status, index }, dispatch] = useReducer(reducer, initialState)
+  const [{ questions, status, index, answer }, dispatch] = useReducer(
+    reducer,
+    initialState
+  )
 
   const numQuestions = questions.length
 
@@ -63,7 +79,13 @@ export default function App() {
         {status === 'ready' && (
           <StartScreen numQuestions={numQuestions} dispatch={dispatch} />
         )}
-        {status === 'active' && <Question question={questions[index]} />}
+        {status === 'active' && (
+          <Question
+            question={questions[index]}
+            dispatch={dispatch}
+            answer={answer}
+          />
+        )}
       </Main>
     </div>
   )
