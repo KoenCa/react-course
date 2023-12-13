@@ -14,6 +14,11 @@ Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
 The page will reload when you make changes.\
 You may also see any lint errors in the console.
 
+### `npm run server`
+
+Runs a JSON server instance that serves the JSON in `data/questions.json` via
+a rest API. This is used by the React app to fetch the questions for the quiz.
+
 ### `npm test`
 
 Launches the test runner in the interactive watch mode.\
