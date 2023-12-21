@@ -1,5 +1,6 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 import { faker } from '@faker-js/faker'
+import BtnDarkMode from './components/BtnDarkMode'
 
 function createRandomPost() {
   return {
@@ -15,7 +16,6 @@ function App() {
     Array.from({ length: 30 }, () => createRandomPost())
   )
   const [searchQuery, setSearchQuery] = useState('')
-  const [isFakeDark, setIsFakeDark] = useState(false)
 
   // Derived state. These are the posts that will actually be displayed
   const searchedPosts =
@@ -35,14 +35,6 @@ function App() {
     setPosts([])
   }
 
-  // Whenever `isFakeDark` changes, we toggle the `fake-dark-mode` class on the HTML element (see in "Elements" dev tool).
-  useEffect(
-    function () {
-      document.documentElement.classList.toggle('fake-dark-mode')
-    },
-    [isFakeDark]
-  )
-
   return (
     <PostContext.Provider
       value={{
@@ -53,14 +45,9 @@ function App() {
         setSearchQuery,
       }}
     >
-      <section>
-        <button
-          onClick={() => setIsFakeDark(isFakeDark => !isFakeDark)}
-          className="btn-fake-dark-mode"
-        >
-          {isFakeDark ? '☀️' : '🌙'}
-        </button>
+      <BtnDarkMode />
 
+      <section>
         <Header />
         <Main />
         <Archive />
