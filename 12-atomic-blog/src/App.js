@@ -1,17 +1,9 @@
 import { useState } from 'react'
-import { faker } from '@faker-js/faker'
 import BtnDarkMode from './components/BtnDarkMode'
 import { PostProvider, usePosts } from './PostProvider'
-
-function createRandomPost() {
-  return {
-    title: `${faker.hacker.adjective()} ${faker.hacker.noun()}`,
-    body: faker.hacker.phrase(),
-  }
-}
+import createRandomPost from './utilities/createRandomPost'
 
 function App() {
-
   return (
     <section>
       <BtnDarkMode />

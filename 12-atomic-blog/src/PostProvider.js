@@ -1,14 +1,7 @@
 import { createContext, useContext, useState } from 'react'
-import { faker } from '@faker-js/faker'
+import createRandomPost from './utilities/createRandomPost'
 
 const PostContext = createContext()
-
-function createRandomPost() {
-  return {
-    title: `${faker.hacker.adjective()} ${faker.hacker.noun()}`,
-    body: faker.hacker.phrase(),
-  }
-}
 
 function PostProvider({ children }) {
   const [posts, setPosts] = useState(() =>
