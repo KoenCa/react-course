@@ -1,7 +1,6 @@
-import { useContext, useState } from 'react'
+import { createContext, useContext, useState } from 'react'
 import { faker } from '@faker-js/faker'
 import BtnDarkMode from './components/BtnDarkMode'
-import { PostProvider, PostContext } from './PostProvider'
 
 function createRandomPost() {
   return {
@@ -10,17 +9,51 @@ function createRandomPost() {
   }
 }
 
+const PostContext = createContext()
+
 function App() {
+  const [posts, setPosts] = useState(() =>
+    Array.from({ length: 30 }, () => createRandomPost())
+  )
+  const [searchQuery, setSearchQuery] = useState('')
+
+  // Derived state. These are the posts that will actually be displayed
+  const searchedPosts =
+    searchQuery.length > 0
+      ? posts.filter(post =>
+          `${post.title} ${post.body}`
+            .toLowerCase()
+            .includes(searchQuery.toLowerCase())
+        )
+      : posts
+
+  function handleAddPost(post) {
+    setPosts(posts => [post, ...posts])
+  }
+
+  function handleClearPosts() {
+    setPosts([])
+  }
+
   return (
-    <section>
+    <PostContext.Provider
+      value={{
+        posts: searchedPosts,
+        onAddPost: handleAddPost,
+        onClearPosts: handleClearPosts,
+        searchQuery,
+        setSearchQuery,
+      }}
+    >
       <BtnDarkMode />
-      <PostProvider>
+
+      <section>
         <Header />
         <Main />
         <Archive />
         <Footer />
-      </PostProvider>
-    </section>
+      </section>
+    </PostContext.Provider>
   )
 }
 
