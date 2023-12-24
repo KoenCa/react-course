@@ -16,19 +16,20 @@ export default function Login() {
   useEffect(() => {
     if (!isAuthenticated) return
 
-    navigate('/app')
+    navigate('/app', { replace: true })
   }, [isAuthenticated, navigate])
 
   function handleSubmit(e) {
     e.preventDefault()
-    login(email, password)
+
+    if (email && password) login(email, password)
   }
 
   return (
     <main className={styles.login}>
       <PageNav />
 
-      <form className={styles.form}>
+      <form className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.row}>
           <label htmlFor="email">Email address</label>
           <input
@@ -50,9 +51,7 @@ export default function Login() {
         </div>
 
         <div>
-          <Button type="primary" onClick={handleSubmit}>
-            Login
-          </Button>
+          <Button type="primary">Login</Button>
         </div>
       </form>
     </main>
