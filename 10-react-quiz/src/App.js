@@ -1,4 +1,3 @@
-import { useEffect, useReducer } from 'react'
 import Header from './components/Header'
 import Main from './components/Main'
 import Loader from './components/Loader'
@@ -13,21 +12,7 @@ import Timer from './components/Timer'
 import { useQuiz } from './contexts/QuizContext'
 
 export default function App() {
-  const { status, dispatch } = useQuiz()
-
-  useEffect(() => {
-    async function fetchQuestions() {
-      try {
-        const response = await fetch('http://localhost:8000/questions')
-        const questions = await response.json()
-        dispatch({ type: 'dataReceived', payload: questions })
-      } catch (error) {
-        dispatch({ type: 'dataFailed' })
-      }
-    }
-
-    fetchQuestions()
-  }, [])
+  const { status } = useQuiz()
 
   return (
     <div className="app">

@@ -1,4 +1,4 @@
-import { createContext, useContext, useReducer } from 'react'
+import { createContext, useContext, useEffect, useReducer } from 'react'
 
 const QuizContext = createContext()
 
@@ -79,18 +79,30 @@ function QuizProvider({ children }) {
     dispatch,
   ] = useReducer(reducer, initialState)
 
+  useEffect(() => {
+    async function fetchQuestions() {
+      try {
+        const response = await fetch('http://localhost:8000/questions')
+        const questions = await response.json()
+        dispatch({ type: 'dataReceived', payload: questions })
+      } catch (error) {
+        dispatch({ type: 'dataFailed' })
+      }
+    }
+
+    fetchQuestions()
+  }, [])
+
   const numQuestions = questions?.length
   const maxPossiblePoints = questions?.reduce(
     (prev, current) => prev + current.points,
     0
   )
-  const currentQuestion = questions?.[index]
 
   return (
     <QuizContext.Provider
       value={{
         questions,
-        currentQuestion,
         status,
         index,
         answer,
