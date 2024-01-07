@@ -8,26 +8,29 @@ function Calculator({ workouts, allowSound }) {
   const [durationBreak, setDurationBreak] = useState(5)
   const [duration, setDuration] = useState(0)
 
+  // One useEffect for each side effect
   useEffect(() => {
     setDuration((number * sets * speed) / 60 + (sets - 1) * durationBreak)
   }, [number, sets, speed, durationBreak])
 
+  useEffect(() => {
+    const playSound = function () {
+      if (!allowSound) return
+      const sound = new Audio(clickSound)
+      sound.play()
+    }
+
+    playSound()
+  }, [duration, allowSound])
+
   const mins = Math.floor(duration)
   const seconds = (duration - mins) * 60
 
-  const playSound = function () {
-    if (!allowSound) return
-    const sound = new Audio(clickSound)
-    sound.play()
-  }
-
   function handleIncrement() {
-    playSound()
     setDuration(duration => Math.floor(duration) + 1)
   }
 
   function handleDecrement() {
-    playSound()
     setDuration(duration => (duration > 1 ? Math.floor(duration) - 1 : 0))
   }
 
