@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import Calculator from "./Calculator";
 import ToggleSounds from "./ToggleSounds";
 
@@ -9,7 +9,7 @@ function App() {
   // Will be be AM or PM
   const partOfDay = time.slice(-2);
 
-  const workouts = [
+  const workouts = useMemo(() => [
     {
       name: "Full-body workout",
       numExercises: partOfDay === "AM" ? 9 : 8,
@@ -41,6 +41,7 @@ function App() {
       second: "2-digit",
     }).format(date);
   }
+  ], [partOfDay]);
 
   useEffect(function () {
     const id = setInterval(function () {
