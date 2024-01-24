@@ -1,18 +1,28 @@
 import { useState } from "react";
+import { useDispatch } from "react-redux";
+import { createCustomer } from "./customerSlice";
 
 function Customer() {
   const [fullName, setFullName] = useState("");
   const [nationalId, setNationalId] = useState("");
 
-  function handleClick() {}
+  const dispatch = useDispatch()
+
+  function handleSubmit(e) {
+    e.preventDefault()
+    if (!fullName || !nationalId) return
+
+    dispatch(createCustomer(fullName, nationalId))
+  }
 
   return (
     <div>
       <h2>Create new customer</h2>
-      <div className="inputs">
+      <form className="inputs" onSubmit={handleSubmit}>
         <div>
           <label>Customer full name</label>
           <input
+            required
             value={fullName}
             onChange={(e) => setFullName(e.target.value)}
           />
@@ -20,12 +30,13 @@ function Customer() {
         <div>
           <label>National ID</label>
           <input
+            required
             value={nationalId}
             onChange={(e) => setNationalId(e.target.value)}
           />
         </div>
-        <button onClick={handleClick}>Create new customer</button>
-      </div>
+        <button type="submit">Create new customer</button>
+      </form>
     </div>
   );
 }
