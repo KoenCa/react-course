@@ -41,11 +41,28 @@ const accountSlice = createSlice({
   },
 })
 
-console.log(accountSlice)
-
 export default accountSlice.reducer
-export const { deposit, withdraw, requestLoan, payLoan, convertingCurrency } =
+export const { withdraw, requestLoan, payLoan, convertingCurrency } =
   accountSlice.actions
+
+// Break out of Redux toolkit's createSlice to handle async actions with Thunk
+export function deposit(amount, currency) {
+  // Using Redux toolkit, the type string should follow the pattern 'sliceName/reducerName'
+  if (currency === 'USD') return { type: 'account/deposit', payload: amount }
+
+  // When returning a function, it will be handled by the thunk middleware
+  return async function (dispatch, getState) {
+    dispatch({ type: 'account/convertingCurrency' })
+
+    const result = await fetch(
+      `https://api.frankfurter.app/latest?amount=${amount}&from=${currency}&to=USD`
+    )
+    const data = await result.json()
+    const convertedAmount = data.rates.USD
+
+    return dispatch({ type: 'account/deposit', payload: convertedAmount })
+  }
+}
 
 // OLD WAY: without Redux toolkit
 // export default function accountReducer(state = initialState, action) {
@@ -84,23 +101,6 @@ export const { deposit, withdraw, requestLoan, payLoan, convertingCurrency } =
 //       }
 //     default:
 //       return state
-//   }
-// }
-
-// export function deposit(amount, currency) {
-//   if (currency === 'USD') return { type: 'account/deposit', payload: amount }
-
-//   // When returning a function, it will be handled by the thunk middleware
-//   return async function (dispatch, getState) {
-//     dispatch({ type: 'account/convertingCurrency' })
-
-//     const result = await fetch(
-//       `https://api.frankfurter.app/latest?amount=${amount}&from=${currency}&to=USD`
-//     )
-//     const data = await result.json()
-//     const convertedAmount = data.rates.USD
-
-//     return dispatch({ type: 'account/deposit', payload: convertedAmount })
 //   }
 // }
 

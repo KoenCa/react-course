@@ -20,8 +20,7 @@ function AccountOperations() {
     e.preventDefault()
     if (!depositAmount) return
 
-    // dispatch(deposit({ amount: depositAmount, currency: currency }))
-    dispatch(deposit(depositAmount))
+    dispatch(deposit(depositAmount, currency))
     setDepositAmount('')
     setCurrency('USD')
   }
