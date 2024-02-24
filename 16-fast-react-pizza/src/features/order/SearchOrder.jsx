@@ -1,28 +1,10 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { Form } from "react-router-dom"
 
 function SearchOrder() {
-  const [query, setQuery] = useState('')
-  const navigate = useNavigate()
-
-  function handleSubmit(e) {
-    e.preventDefault()
-    if (!query) return
-
-    navigate(`/order/${query}`)
-    setQuery('')
-  }
-
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Searh order #"
-        value={query}
-        required
-        onChange={e => setQuery(e.target.value)}
-      />
-    </form>
+    <Form method="get" action="/order/">
+      <input name="orderId" type="text" placeholder="Searh order #" required />
+    </Form>
   )
 }
 

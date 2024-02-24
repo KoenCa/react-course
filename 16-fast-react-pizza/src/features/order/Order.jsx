@@ -52,8 +52,11 @@ function Order() {
   )
 }
 
-export async function loader({ params }) {
-  const order = await getOrder(params.orderId)
+export async function loader({ params, request }) {
+  // When user searches for order id, the search form will redirect to /order/?orderId=123
+  const orderId =
+    params.orderId || new URL(request.url).searchParams.get('orderId')
+  const order = await getOrder(orderId)
   return order
 }
 
