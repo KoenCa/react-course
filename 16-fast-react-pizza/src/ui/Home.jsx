@@ -1,11 +1,17 @@
+import CreateUser from '../features/user/CreateUser'
+
 function Home() {
   return (
-    <div>
-      <h1>
+    <div className='home'>
+      <h1 className="landing-title">
         The best pizza.
         <br />
-        Straight out of the oven, straight to you.
+        <span className="landing-title__highlight">
+          Straight out of the oven, straight to you.
+        </span>
       </h1>
+
+      <CreateUser />
     </div>
   );
 }
