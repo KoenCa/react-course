@@ -8,10 +8,11 @@ function CreateUser() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <p>👋 Welcome! Please start by telling us your name:</p>
+    <form onSubmit={handleSubmit} className='create-user'>
+      <p className='create-user__message'>👋 Welcome! Please start by telling us your name:</p>
 
       <input
+        className='create-user__input'
         type="text"
         placeholder="Your full name"
         value={username}

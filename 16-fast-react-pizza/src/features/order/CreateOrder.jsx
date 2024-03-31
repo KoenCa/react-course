@@ -41,7 +41,7 @@ function CreateOrder() {
   const cart = fakeCart
 
   return (
-    <div>
+    <div className='create-order'>
       <h2>Ready to order? Let&apos;s go!</h2>
 
       {/* <Form method="POST" action="/order/new"> */}
@@ -79,7 +79,7 @@ function CreateOrder() {
 
         <div>
           <input type="hidden" name="cart" value={JSON.stringify(cart)} />
-          <button disabled={isSubmitting}>
+          <button disabled={isSubmitting} className='create-order__button'>
             {isSubmitting ? 'Placing order' : 'Order now'}
           </button>
         </div>
@@ -107,9 +107,11 @@ export async function action({ request }) {
   if (Object.keys(errors).length > 0)
     return errors
 
-  const newOrder = await createOrder(order)
+  // const newOrder = await createOrder(order)
 
-  return redirect(`/order/${newOrder.id}`)
+  // return redirect(`/order/${newOrder.id}`)
+
+  return null;
 }
 
 export default CreateOrder

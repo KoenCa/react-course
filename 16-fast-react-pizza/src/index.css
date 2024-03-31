@@ -1,18 +1,33 @@
 :root {
-  --yellow-500: #eab308;
+  --blue-500: #3b82f6;
+  --blue-600: #2563eb;
   --stone-100: #f5f5f4;
   --stone-200: #e7e5e4;
   --stone-300: #d6d3d1;
   --stone-500: #78716c;
+  --stone-600: #57534e;
   --stone-700: #44403c;
   --stone-800: #292524;
+  --yellow-300: #fde047;
+  --yellow-400: #facc15;
+  --yellow-500: #eab308;
 
   --font-size-sm: 1.4rem;
   --font-size-base: 1.6rem;
   --font-size-xl: 2rem;
+  --font-size-2xl: 2.4rem;
+  --font-size-3xl: 3rem;
 
   --line-height-sm: 2rem;
   --line-height-xl: 2.8rem;
+  --line-height-2xl: 3.2rem;
+  --line-height-3xl: 3.6rem;
+
+  /* --breakpoint-sm:	640px;
+  --breakpoint-md:	768px;
+  --breakpoint-lg:	1024px;
+  --breakpoint-xl:	1280px;
+  --breakpoint-2xl:	1536px; */
 }
 
 *,
@@ -44,11 +59,17 @@ a {
   color: var(--stone-700);
 }
 
-.layout {
-  display: grid;
-  grid-template-rows: auto 1fr auto;
-  gap: 32px;
-  height: 100dvh;
+input[type='text'] {
+  appearance: none;
+  border: none;
+  font-size: var(--font-size-base);
+}
+
+button {
+  display: inline-block;
+  appearance: none;
+  background-color: transparent;
+  border: none;
 }
 
 /* https://dev.to/afif/i-made-100-css-loaders-for-your-next-project-4eje */
@@ -76,11 +97,39 @@ a {
   }
 }
 
+.layout {
+  display: grid;
+  grid-template-rows: auto 1fr auto;
+  height: 100dvh;
+}
+
+.layout__main-wrapper {
+  overflow: scroll;
+}
+
+.layout__main-content {
+  max-width: 76.8rem;
+  margin-inline: auto;
+}
+
 .header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   background-color: var(--yellow-500);
   text-transform: uppercase;
-  padding: 1.2rem 1.6rem;
+  padding-left: 2.4rem;
+  padding-right: 2.4rem;
+  padding-top: 1.2rem;
+  padding-bottom: 1.2rem;
   border-bottom: 1px solid var(--stone-200);
+
+  @media (max-width: 640px) {
+    padding-left: 1.6rem;
+    padding-right: 1.6rem;
+    padding-top: 1.2rem;
+    padding-bottom: 1.2rem;
+  }
 }
 
 .header__link {
@@ -98,17 +147,29 @@ a {
 }
 
 .home {
-  margin-top: 4rem;
-  margin-bottom: 4rem;
+  margin-top: 6.4rem;
+  margin-bottom: 6.4rem;
   text-align: center;
+  padding-left: 1.6rem;
+  padding-right: 1.6rem;
+
+  @media (max-width: 640px) {
+    margin-top: 4rem;
+    margin-bottom: 4rem;
+  }
 }
 
 .landing-title {
   color: var(--stone-700);
-  font-size: var(--font-size-xl);
+  font-size: var(--font-size-3xl);
   font-weight: 600;
-  line-height: var(--line-height-xl);
+  line-height: var(--line-height-3xl);
   margin-bottom: 3.2rem;
+
+  @media (max-width: 768px) {
+    font-size: var(--font-size-xl);
+    line-height: var(--line-height-xl);
+  }
 }
 
 .landing-title__highlight {
@@ -116,14 +177,30 @@ a {
 }
 
 .cart-overview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
   background-color: var(--stone-800);
   text-transform: uppercase;
-  padding: 1.6rem;
+  padding-left: 2.4rem;
+  padding-right: 2.4rem;
+  padding-top: 1.6rem;
+  padding-bottom: 1.6rem;
+
+  @media (max-width: 640px) {
+    padding: 1.6rem;
+  }
 }
 
 .cart-overview__content {
   color: var(--stone-300);
   font-weight: 600;
+
+
+  @media (max-width: 768px) {
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-sm);
+  }
 
   /* Spacing between children */
   & > * + * {
@@ -133,4 +210,63 @@ a {
 
 .cart-overview__link {
   color: var(--stone-300);
+}
+
+.cart {}
+
+.cart__link {
+  font-size: var(--font-size-sm);
+  line-height: var(--line-height-sm);
+  color: var(--blue-500);
+
+  &:hover {
+    color: var(--blue-600);
+    text-decoration: underline;
+  }
+}
+
+.create-user {}
+
+.create-user__message {
+  margin-bottom: 1.6rem;
+  color: var(--stone-600);
+
+  @media (max-width: 640px) {
+    font-size: var(--font-size-sm);
+    line-height: var(--line-height-sm);
+  }
+}
+
+.create-user__input {
+  max-width: 28.8rem;
+  width: 100%;
+}
+
+
+.create-order {}
+
+.create-order__button {
+  background-color: var(--yellow-400);
+  color: var(--stone-800);
+  font-weight: 600;
+  padding: 1.2rem 1.6rem;
+  text-transform: uppercase;
+  cursor: pointer;
+  letter-spacing: 0.1em;
+  border-radius: 999px;
+  transition: background-color 300ms;
+
+  &:hover {
+    background-color: var(--yellow-300);
+  }
+
+  &:focus {
+    outline-color: var(--yellow-300);
+    outline-offset: 0.4rem;
+    background-color: var(--yellow-300);
+  }
+
+  &:disabled {
+    cursor: not-allowed;
+  }
 }
