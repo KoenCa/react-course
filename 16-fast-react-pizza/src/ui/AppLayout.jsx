@@ -9,12 +9,12 @@ function AppLayout() {
 
   return (
     <div className="grid h-screen grid-rows-[auto_1fr_auto] gap-4">
-      {isLoading && <Loader />}
-
       <Header />
 
       <main className="overflow-scroll">
-        <div className="mx-auto max-w-3xl">
+        <div className="mx-auto max-w-3xl px-4 md:px-0">
+          {isLoading && <Loader />}
+
           <Outlet />
         </div>
       </main>
