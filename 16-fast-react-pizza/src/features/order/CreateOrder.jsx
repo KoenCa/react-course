@@ -50,6 +50,7 @@ function CreateOrder() {
         <div>
           <label>First Name</label>
           <input
+            className="input"
             type="text"
             name="customer"
             required
@@ -61,6 +62,7 @@ function CreateOrder() {
           <label>Phone number</label>
           <div>
             <input
+              className="input"
               type="tel"
               name="phone"
               required
@@ -74,7 +76,7 @@ function CreateOrder() {
           <label>Address</label>
           <div>
             <input
-              className="w-full rounded-full border border-stone-200 bg-white px-4 py-2 text-sm transition-all duration-300 placeholder:text-stone-400 focus:ring focus:ring-yellow-400 focus:outline-none md:px-6 md:py-3"
+              className="input"
               type="text"
               name="address"
               required
