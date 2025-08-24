@@ -19,3 +19,9 @@ export function calcMinutesLeft(dateStr) {
   const d2 = new Date(dateStr).getTime();
   return Math.round((d2 - d1) / 60000);
 }
+
+/**
+ * Use with template literals to have Prettier Tailwind sorting outside of `className` attribute
+ */
+export const tw = (strings, ...values) =>
+  String.raw({ raw: strings }, ...values);
