@@ -35,8 +35,15 @@ const userSlice = createSlice({
       state.username = action.payload;
     },
   },
+  selectors: {
+    getUsername: (state) => state.username,
+  },
 });
 
-export const { updateName } = userSlice.actions;
+export const { actions, selectors, reducer } = userSlice;
 
-export default userSlice.reducer;
+export const { updateName } = actions;
+
+export const { getUsername } = selectors;
+
+export default reducer;
