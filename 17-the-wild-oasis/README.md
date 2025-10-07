@@ -1,3 +1,29 @@
+# The Wild Oasis
+
+## Supabase setup
+
+Supabase is setup with local env vars so that any project specific keys are not leaked in the public GitHub repo. They should be put into a `.env.local` file in the root of the project with the following contents:
+
+```shell
+VITE_SUPABASE_URL=<supabase_project_url> # Dashboard -> Project Settings -> Data API -> Project URL section
+VITE_SUPABASE_PUBLISHABLE_KEY=<supabase_project_url> # Dashboard -> Project Settings -> API keys -> Publishable key section
+SUPABASE_PROJECT_ID=luttuwzpgsetpqmlgmjx # Dashboard -> Project Settings -> General -> General settings section
+```
+
+### Supbase CLI
+
+The Supabas CLI package is added to the dev dependencies so it should already be installed if you have installated the project dependencies. You should login with the CLI to run other commands:
+
+```bash
+npx supabase login
+```
+
+### Supabase Types
+
+A command to generate Typescript types for the Supabase client also has been added to the package.json. For it to work properly the `.env.local` file should be present. The command should be rerun whenever the tables of the database are updated.
+
+**SEE BELOW FOR ORIGINAL README FROM PROJECT INIT WITH VITE AS REFERENCE.**
+
 # React + TypeScript + Vite
 
 This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
