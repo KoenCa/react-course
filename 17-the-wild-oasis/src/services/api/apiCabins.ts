@@ -1,4 +1,4 @@
-import { supabase } from './supabase/supabase'
+import { supabase } from '../supabase/supabase'
 
 export const getCabins = async () => {
   const { data: cabins, error } = await supabase.from('Cabins').select('*')
@@ -10,3 +10,4 @@ export const getCabins = async () => {
 
   return cabins
 }
+
