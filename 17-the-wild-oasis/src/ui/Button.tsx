@@ -1,8 +1,8 @@
 import styled, { css } from 'styled-components'
 
 interface ButtonProps {
-  variation: keyof typeof variations
-  size: keyof typeof sizes
+  variation?: keyof typeof variations
+  size?: keyof typeof sizes
 }
 
 const variations = {
