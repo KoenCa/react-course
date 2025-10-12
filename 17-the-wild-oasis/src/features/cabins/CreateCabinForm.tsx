@@ -3,13 +3,9 @@ import styled from 'styled-components'
 import { Input } from '../../ui/Input'
 import { Form } from '../../ui/Form'
 import { Button } from '../../ui/Button'
-import FileInput from '../../ui/FileInput'
+import { FileInput } from '../../ui/FileInput'
 import Textarea from '../../ui/Textarea'
-import {
-  useForm,
-  type SubmitErrorHandler,
-  type SubmitHandler,
-} from 'react-hook-form'
+import { useForm, type SubmitHandler } from 'react-hook-form'
 import { createCabin } from '../../services/api/apiCabins'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import toast from 'react-hot-toast'
@@ -21,7 +17,7 @@ interface FormValues {
   regularPrice: number
   discount: number
   description: string
-  image: string
+  image: FileList
 }
 
 export const CreateCabinForm = () => {
@@ -46,7 +42,7 @@ export const CreateCabinForm = () => {
   } = useForm<FormValues>({ disabled: isCreating })
 
   const onFormSubmit: SubmitHandler<FormValues> = data => {
-    mutate(data)
+    mutate({ ...data, image: data.image.item(0) })
   }
 
   return (
@@ -111,7 +107,11 @@ export const CreateCabinForm = () => {
       </FormRow>
 
       <FormRow label="Cabin photo" error={formErrors?.image?.message}>
-        <FileInput id="image" accept="image/*" {...register('image')} />
+        <FileInput
+          id="image"
+          accept="image/*"
+          {...register('image', { required: 'This field is required.' })}
+        />
       </FormRow>
 
       <FormRow>
