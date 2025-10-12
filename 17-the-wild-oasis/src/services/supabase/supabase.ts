@@ -1,7 +1,10 @@
 import { createClient } from '@supabase/supabase-js'
 import type { Database } from './database.types'
-export const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
-const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
-const supabase = createClient<Database>(supabaseUrl, supabaseKey)
 
-export { supabase }
+export const CABIN_IMAGES_BUCKET_NAME = 'cabin-images'
+export const AVATARS_BUCEKT_NAME = 'avatars'
+
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL
+const supabaseKey = import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY
+
+export const supabase = createClient<Database>(supabaseUrl, supabaseKey)
