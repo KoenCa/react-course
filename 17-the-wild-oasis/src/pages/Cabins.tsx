@@ -3,7 +3,7 @@ import { Row } from '../ui/Row'
 import { CabinTable } from '../features/cabins/CabinTable'
 import { Button } from '../ui/Button'
 import { useState } from 'react'
-import { CreateCabinForm } from '../features/cabins/CreateCabinForm'
+import { CabinForm } from '../features/cabins/CabinForm'
 
 export const Cabins = () => {
   const [showForm, setShowForm] = useState(false)
@@ -22,7 +22,7 @@ export const Cabins = () => {
           Add new cabin
         </Button>
 
-        {showForm && <CreateCabinForm />}
+        {showForm && <CabinForm />}
       </Row>
     </>
   )
