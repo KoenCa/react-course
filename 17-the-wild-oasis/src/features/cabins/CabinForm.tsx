@@ -1,15 +1,13 @@
-import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useForm, type SubmitHandler } from 'react-hook-form'
-import toast from 'react-hot-toast'
-
 import { Input } from '../../ui/Input'
 import { Form } from '../../ui/Form'
 import { Button } from '../../ui/Button'
 import { FileInput } from '../../ui/FileInput'
 import Textarea from '../../ui/Textarea'
-import { createCabin, updateCabin } from '../../services/api/apiCabins'
 import { FormRow } from '../../ui/FormRow'
 import type { Database } from '../../services/supabase/database.types'
+import { useCreateCabin } from './useCreateCabin'
+import { useUpdateCabin } from './useUpdateCabin'
 
 interface CabinFormProps {
   cabinToUpdate?: Database['public']['Tables']['Cabins']['Row']
@@ -26,36 +24,17 @@ interface FormValues {
 
 export const CabinForm = ({ cabinToUpdate }: CabinFormProps) => {
   const { id: editCabinId, ...editValues } = cabinToUpdate ?? {}
-  const isEditingCabin = Boolean(editCabinId)
+  const isEditingCabin = !!editCabinId
 
-  const queryClient = useQueryClient()
+  const { isCreatingCabin, createCabin } = useCreateCabin()
+  const { isUpdatingCabin, updateCabin } = useUpdateCabin()
 
-  const { mutate: createCabinMutation, isPending: isCreating } = useMutation({
-    mutationFn: createCabin,
-    onSuccess: () => {
-      toast.success('New Cabin successfully created')
-      queryClient.invalidateQueries({ queryKey: ['cabins'] })
-      reset()
-    },
-    onError: error => toast.error(error.message),
-  })
-
-  const { mutate: updateCabinMutation, isPending: isUpdating } = useMutation({
-    mutationFn: updateCabin,
-    onSuccess: () => {
-      toast.success('Cabin successfully updated')
-      queryClient.invalidateQueries({ queryKey: ['cabins'] })
-      reset()
-    },
-    onError: error => toast.error(error.message),
-  })
-
-  const isPending = isCreating || isUpdating
+  const isPending = isCreatingCabin || isUpdatingCabin
 
   const {
     register,
     handleSubmit,
-    reset,
+    reset: resetForm,
     formState: { errors: formErrors },
   } = useForm<Database['public']['Tables']['Cabins']['Row'], any, FormValues>({
     disabled: isPending,
@@ -64,14 +43,20 @@ export const CabinForm = ({ cabinToUpdate }: CabinFormProps) => {
 
   const onFormSubmit: SubmitHandler<FormValues> = data => {
     if (!isEditingCabin)
-      return createCabinMutation({
-        ...data,
-        image: (data.image as FileList)[0],
-      })
+      return createCabin(
+        {
+          ...data,
+          image: (data.image as FileList)[0],
+        },
+        { onSuccess: () => resetForm() }
+      )
 
     const image = typeof data.image === 'string' ? data.image : data.image[0]
 
-    updateCabinMutation({ updatedCabin: { ...data, image }, id: editCabinId })
+    updateCabin(
+      { updatedCabin: { ...data, image }, id: editCabinId },
+      { onSuccess: () => resetForm() }
+    )
   }
 
   return (
