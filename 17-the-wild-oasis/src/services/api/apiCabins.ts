@@ -12,7 +12,34 @@ export const getCabins = async () => {
   return cabins
 }
 
-export const createCabin = async (
+export const createCabin = (
+  newCabin: Omit<Database['public']['Tables']['Cabins']['Insert'], 'image'> & {
+    image: File | string | null
+  }
+) =>
+  // Image path already exists
+  newCabin.image == null || typeof newCabin.image === 'string'
+    ? insertCabin({ ...newCabin, image: newCabin.image })
+    : insertCabinWithNewImage({ ...newCabin, image: newCabin.image })
+
+const insertCabin = async (
+  newCabin: Database['public']['Tables']['Cabins']['Insert']
+) => {
+  const { data: createdCabin, error } = await supabase
+    .from('Cabins')
+    .insert([newCabin])
+    .select()
+    .single()
+
+  if (error) {
+    console.error(error)
+    throw new Error('Cabin could not be created')
+  }
+
+  return createdCabin
+}
+
+const insertCabinWithNewImage = async (
   newCabin: Omit<Database['public']['Tables']['Cabins']['Insert'], 'image'> & {
     image: File
   }
@@ -22,16 +49,7 @@ export const createCabin = async (
   const imagePath = getPublicCabinImageUrl(imageName)
 
   // 2. Create Cabin
-  const { data: createdCabin, error } = await supabase
-    .from('Cabins')
-    .insert([{ ...newCabin, image: imagePath }])
-    .select()
-    .single()
-
-  if (error) {
-    console.error(error)
-    throw new Error('Cabin could not be created')
-  }
+  const createdCabin = await insertCabin({ ...newCabin, image: imagePath })
 
   // 3. Upload image
   const { error: storageError } = await uploadCabinImage(
