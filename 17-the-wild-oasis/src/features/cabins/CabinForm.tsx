@@ -11,6 +11,7 @@ import { useUpdateCabin } from './useUpdateCabin'
 
 interface CabinFormProps {
   cabinToUpdate?: Database['public']['Tables']['Cabins']['Row']
+  onCloseModal?: () => void
 }
 
 interface FormValues {
@@ -22,7 +23,7 @@ interface FormValues {
   image: FileList | string
 }
 
-export const CabinForm = ({ cabinToUpdate }: CabinFormProps) => {
+export const CabinForm = ({ cabinToUpdate, onCloseModal }: CabinFormProps) => {
   const { id: editCabinId, ...editValues } = cabinToUpdate ?? {}
   const isEditingCabin = !!editCabinId
 
@@ -48,19 +49,32 @@ export const CabinForm = ({ cabinToUpdate }: CabinFormProps) => {
           ...data,
           image: (data.image as FileList)[0],
         },
-        { onSuccess: () => resetForm() }
+        {
+          onSuccess: () => {
+            resetForm()
+            onCloseModal?.()
+          },
+        }
       )
 
     const image = typeof data.image === 'string' ? data.image : data.image[0]
 
     updateCabin(
       { updatedCabin: { ...data, image }, id: editCabinId },
-      { onSuccess: () => resetForm() }
+      {
+        onSuccess: () => {
+          resetForm()
+          onCloseModal?.()
+        },
+      }
     )
   }
 
   return (
-    <Form onSubmit={handleSubmit(onFormSubmit)}>
+    <Form
+      onSubmit={handleSubmit(onFormSubmit)}
+      type={onCloseModal ? 'modal' : 'regular'}
+    >
       <FormRow label="Cabin name" error={formErrors?.name?.message}>
         <Input
           type="text"
@@ -132,7 +146,11 @@ export const CabinForm = ({ cabinToUpdate }: CabinFormProps) => {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button
+          variation="secondary"
+          type="reset"
+          onClick={() => onCloseModal?.()}
+        >
           Cancel
         </Button>
         <Button disabled={isPending}>
