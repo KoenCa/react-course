@@ -7,13 +7,13 @@ import { useSearchParams } from 'react-router-dom'
 import { useMemo } from 'react'
 
 export const CabinTable = () => {
-  const [searchParams] = useSearchParams({ discount: 'all' })
+  const [searchParams] = useSearchParams()
   const { isLoadingCabins, cabins } = useListCabins()
 
   const filteredCabins = useMemo(() => {
     if (!cabins) return []
 
-    const filterValue = searchParams.get('discount')
+    const filterValue = searchParams.get('discount') || 'all'
 
     if (filterValue === 'all') return cabins
     if (filterValue === 'no-discount')
@@ -21,6 +21,16 @@ export const CabinTable = () => {
     if (filterValue === 'with-discount')
       return cabins?.filter(cabin => cabin.discount && cabin.discount > 0)
   }, [cabins, searchParams])
+
+  const sortedCabins = useMemo(() => {
+    if (!cabins) return []
+
+    const sortByValue = searchParams.get('sortBy') || 'name-asc'
+    const [field, direction] = sortByValue.split('-')
+
+    const modifier = direction === 'asc' ? 1 : -1
+    return filteredCabins?.sort((a, b) => (a[field] - b[field]) * modifier)
+  }, [cabins, searchParams, filteredCabins])
 
   if (isLoadingCabins) return <Spinner />
 
@@ -37,7 +47,7 @@ export const CabinTable = () => {
         </Table.Header>
 
         <Table.Body
-          data={filteredCabins}
+          data={sortedCabins}
           renderRow={cabin => <CabinRow key={cabin.id} cabin={cabin} />}
         />
       </Table>

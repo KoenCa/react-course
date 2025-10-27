@@ -41,13 +41,14 @@ interface FilterPros {
 }
 
 export const Filter = ({ filterField, options }: FilterPros) => {
-  const [searchParams, setSearchParams] = useSearchParams({
-    [filterField]: options[0].value,
-  })
-  const currentFilterValue = searchParams.get(filterField)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const currentFilterValue = searchParams.get(filterField) || options[0].value
 
   const handleClick = (value: string) => {
-    setSearchParams({ [filterField]: value })
+    setSearchParams(prevSearchParams => {
+      prevSearchParams.set(filterField, value)
+      return prevSearchParams
+    })
   }
 
   return (
@@ -56,6 +57,7 @@ export const Filter = ({ filterField, options }: FilterPros) => {
         <FilterButton
           key={option.value}
           $active={currentFilterValue === option.value}
+          disabled={currentFilterValue === option.value}
           onClick={() => handleClick(option.value)}
         >
           {option.label}
