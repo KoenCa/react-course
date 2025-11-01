@@ -17,12 +17,25 @@ export async function getBooking(id: number) {
   return data
 }
 
-export const getBookings = async () => {
-  const { data, error } = await supabase
+export interface GetBookingsArgs {
+  filter: {
+    field: keyof Database['public']['Tables']['Bookings']['Row']
+    value: string
+    method?: 'eq' | 'gte' | 'lte'
+  } | null
+}
+
+export const getBookings = async ({ filter }: GetBookingsArgs) => {
+  let query = supabase
     .from('Bookings')
     .select(
       'id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, Cabins(name), Guests(fullName, email)'
     )
+
+  if (filter != null)
+    query = query[filter.method || 'eq'](filter.field, filter.value)
+
+  const { data, error } = await query
 
   if (error) {
     console.error(error)
