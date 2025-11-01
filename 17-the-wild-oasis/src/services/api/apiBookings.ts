@@ -4,7 +4,7 @@ import { supabase } from '../supabase/supabase'
 
 export async function getBooking(id: number) {
   const { data, error } = await supabase
-    .from('bookings')
+    .from('Bookings')
     .select('*, cabins(*), guests(*)')
     .eq('id', id)
     .single()
@@ -18,22 +18,32 @@ export async function getBooking(id: number) {
 }
 
 export interface GetBookingsArgs {
-  filter: {
+  filter?: {
     field: keyof Database['public']['Tables']['Bookings']['Row']
     value: string
     method?: 'eq' | 'gte' | 'lte'
-  } | null
+  }
+  sortBy?: {
+    field: keyof Database['public']['Tables']['Bookings']['Row']
+    direction: 'asc' | 'desc'
+  }
 }
 
-export const getBookings = async ({ filter }: GetBookingsArgs) => {
+export const getBookings = async (
+  queryOptions: GetBookingsArgs | undefined
+) => {
+  const { filter, sortBy } = queryOptions || {}
+
   let query = supabase
     .from('Bookings')
     .select(
       'id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, Cabins(name), Guests(fullName, email)'
     )
 
-  if (filter != null)
-    query = query[filter.method || 'eq'](filter.field, filter.value)
+  if (filter) query = query[filter.method || 'eq'](filter.field, filter.value)
+
+  if (sortBy)
+    query = query.order(sortBy.field, { ascending: sortBy.direction === 'asc' })
 
   const { data, error } = await query
 
@@ -48,7 +58,7 @@ export const getBookings = async ({ filter }: GetBookingsArgs) => {
 // Returns all BOOKINGS that are were created after the given date. Useful to get bookings created in the last 30 days, for example.
 export async function getBookingsAfterDate(date: Date) {
   const { data, error } = await supabase
-    .from('bookings')
+    .from('Bookings')
     .select('created_at, totalPrice, extrasPrice')
     .gte('created_at', date)
     .lte('created_at', getToday({ end: true }))
@@ -64,7 +74,7 @@ export async function getBookingsAfterDate(date: Date) {
 // Returns all STAYS that are were created after the given date
 export async function getStaysAfterDate(date: Date) {
   const { data, error } = await supabase
-    .from('bookings')
+    .from('Bookings')
     // .select('*')
     .select('*, guests(fullName)')
     .gte('startDate', date)
@@ -81,7 +91,7 @@ export async function getStaysAfterDate(date: Date) {
 // Activity means that there is a check in or a check out today
 export async function getStaysTodayActivity() {
   const { data, error } = await supabase
-    .from('bookings')
+    .from('Bookings')
     .select('*, guests(fullName, nationality, countryFlag)')
     .or(
       `and(status.eq.unconfirmed,startDate.eq.${getToday()}),and(status.eq.checked-in,endDate.eq.${getToday()})`
@@ -104,7 +114,7 @@ export async function updateBooking(
   obj: Database['public']['Tables']['Bookings']['Update']
 ) {
   const { data, error } = await supabase
-    .from('bookings')
+    .from('Bookings')
     .update(obj)
     .eq('id', id)
     .select()

@@ -4,23 +4,29 @@ import {
   type GetBookingsArgs,
 } from '../../services/api/apiBookings'
 import { useSearchParams } from 'react-router-dom'
-import type { Database } from '../../services/supabase/database.types'
 
 export const useListBookings = () => {
   const [searchParams] = useSearchParams()
 
-  const filterValue = searchParams.get('status')
+  const filterValue = searchParams.get('status') || 'all'
   const filter: GetBookingsArgs['filter'] =
-    !filterValue || filterValue === 'all'
-      ? null
+    filterValue === 'all'
+      ? undefined
       : {
           field: 'status',
           value: filterValue,
         }
 
+  const sortByValue = searchParams.get('sortBy') || 'startDate-desc'
+  const [field, direction] = sortByValue.split('-') as [
+    GetBookingsArgs['sortBy']['field'],
+    GetBookingsArgs['sortBy']['direction']
+  ]
+  const sortBy: GetBookingsArgs['sortBy'] = { field, direction }
+
   const { isLoading: isLoadingBookings, data: bookings } = useQuery({
-    queryKey: ['bookings', filter],
-    queryFn: () => getBookings({ filter }),
+    queryKey: ['bookings', filter, sortBy],
+    queryFn: () => getBookings({ filter, sortBy }),
   })
 
   return { isLoadingBookings, bookings }
