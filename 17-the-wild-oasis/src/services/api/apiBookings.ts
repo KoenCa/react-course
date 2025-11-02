@@ -1,3 +1,4 @@
+import { PAGE_SIZE } from '../../utils/constants'
 import { getToday } from '../../utils/helpers'
 import type { Database } from '../supabase/database.types'
 import { supabase } from '../supabase/supabase'
@@ -27,17 +28,19 @@ export interface GetBookingsArgs {
     field: keyof Database['public']['Tables']['Bookings']['Row']
     direction: 'asc' | 'desc'
   }
+  page: number
 }
 
 export const getBookings = async (
   queryOptions: GetBookingsArgs | undefined
 ) => {
-  const { filter, sortBy } = queryOptions || {}
+  const { filter, sortBy, page } = queryOptions || {}
 
   let query = supabase
     .from('Bookings')
     .select(
-      'id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, Cabins(name), Guests(fullName, email)'
+      'id, created_at, startDate, endDate, numNights, numGuests, status, totalPrice, Cabins(name), Guests(fullName, email)',
+      { count: 'exact' }
     )
 
   if (filter) query = query[filter.method || 'eq'](filter.field, filter.value)
@@ -45,14 +48,22 @@ export const getBookings = async (
   if (sortBy)
     query = query.order(sortBy.field, { ascending: sortBy.direction === 'asc' })
 
-  const { data, error } = await query
+  if (page) {
+    // 0 - 9, 10 - 19,...
+    const from = (page - 1) * PAGE_SIZE
+    const to = from + PAGE_SIZE - 1
+
+    query = query.range(from, to)
+  }
+
+  const { data, error, count } = await query
 
   if (error) {
     console.error(error)
     throw new Error('Bookings could no be loaded')
   }
 
-  return data
+  return { bookings: data, count }
 }
 
 // Returns all BOOKINGS that are were created after the given date. Useful to get bookings created in the last 30 days, for example.

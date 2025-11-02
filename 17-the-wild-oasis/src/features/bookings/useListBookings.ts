@@ -8,6 +8,7 @@ import { useSearchParams } from 'react-router-dom'
 export const useListBookings = () => {
   const [searchParams] = useSearchParams()
 
+  // FILTERING
   const filterValue = searchParams.get('status') || 'all'
   const filter: GetBookingsArgs['filter'] =
     filterValue === 'all'
@@ -17,6 +18,7 @@ export const useListBookings = () => {
           value: filterValue,
         }
 
+  // SORTING
   const sortByValue = searchParams.get('sortBy') || 'startDate-desc'
   const [field, direction] = sortByValue.split('-') as [
     GetBookingsArgs['sortBy']['field'],
@@ -24,10 +26,22 @@ export const useListBookings = () => {
   ]
   const sortBy: GetBookingsArgs['sortBy'] = { field, direction }
 
-  const { isLoading: isLoadingBookings, data: bookings } = useQuery({
-    queryKey: ['bookings', filter, sortBy],
-    queryFn: () => getBookings({ filter, sortBy }),
+  // PAGINATION
+  const page = !searchParams.get('page') ? 1 : Number(searchParams.get('page'))
+
+  const {
+    isLoading: isLoadingBookings,
+    data: { bookings, count } = {},
+    error,
+  } = useQuery({
+    queryKey: ['bookings', filter, sortBy, page],
+    queryFn: () => getBookings({ filter, sortBy, page }),
   })
 
-  return { isLoadingBookings, bookings }
+  return {
+    isLoadingBookings,
+    error,
+    bookings: bookings,
+    count: count,
+  }
 }

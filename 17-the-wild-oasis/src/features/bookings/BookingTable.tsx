@@ -7,7 +7,7 @@ import { Spinner } from '../../ui/Spinner'
 import { Pagination } from '../../ui/Pagination'
 
 export const BookingTable = () => {
-  const { bookings, isLoadingBookings } = useListBookings()
+  const { bookings, count, isLoadingBookings, error } = useListBookings()
 
   if (isLoadingBookings) return <Spinner />
   if (!bookings?.length) return <Empty resourceName={'bookings'} />
@@ -32,7 +32,7 @@ export const BookingTable = () => {
         />
 
         <Table.Footer>
-          <Pagination count={5} />
+          <Pagination count={count} />
         </Table.Footer>
       </Table>
     </Menus>
