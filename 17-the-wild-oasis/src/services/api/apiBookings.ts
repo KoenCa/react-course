@@ -6,7 +6,7 @@ import { supabase } from '../supabase/supabase'
 export async function getBooking(id: number) {
   const { data, error } = await supabase
     .from('Bookings')
-    .select('*, cabins(*), guests(*)')
+    .select('*, Cabins(*), Guests(*)')
     .eq('id', id)
     .single()
 

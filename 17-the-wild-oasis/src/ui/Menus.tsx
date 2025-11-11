@@ -1,15 +1,20 @@
 import {
   createContext,
   useContext,
-  useEffect,
-  useRef,
   useState,
+  type Dispatch,
   type ReactNode,
+  type SetStateAction,
 } from 'react'
 import { createPortal } from 'react-dom'
 import { HiEllipsisVertical } from 'react-icons/hi2'
 import styled from 'styled-components'
 import { useClickOutside } from '../hooks/useClickOutside'
+
+interface Position {
+  x: number
+  y: number
+}
 
 const Menu = styled.div`
   display: flex;
@@ -36,7 +41,7 @@ const StyledToggle = styled.button`
   }
 `
 
-const StyledList = styled.ul<{ position: { x: number; y: number } }>`
+const StyledList = styled.ul<{ position: Position }>`
   position: fixed;
 
   background-color: var(--color-grey-0);
@@ -74,17 +79,15 @@ const StyledButton = styled.button`
 
 const MenuContext = createContext<{
   openId: number | null
-  position: { x: number; y: number }
+  position: Position | null
   close: () => void
-  open: (id: number) => void
-  setPosition: ({ x, y }: { x: number; y: number }) => void
-}>({
-  openId: null,
-})
+  open: Dispatch<SetStateAction<number | null>>
+  setPosition: ({ x, y }: Position) => void
+}>()
 
 const Menus = ({ children }: { children: ReactNode }) => {
-  const [openId, setOpenId] = useState(null)
-  const [position, setPosition] = useState(null)
+  const [openId, setOpenId] = useState<number | null>(null)
+  const [position, setPosition] = useState<Position | null>(null)
 
   const close = () => setOpenId(null)
   const open = setOpenId

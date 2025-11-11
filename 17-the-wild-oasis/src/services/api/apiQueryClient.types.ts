@@ -1,6 +1,6 @@
 import '@tanstack/react-query'
 
-type QueryKey = ['cabins' | 'settings' | 'bookings', ...ReadonlyArray<unknown>]
+type QueryKey = ['cabins' | 'settings' | 'bookings' | 'booking', ...ReadonlyArray<unknown>]
 
 declare module '@tanstack/react-query' {
   interface Register {
