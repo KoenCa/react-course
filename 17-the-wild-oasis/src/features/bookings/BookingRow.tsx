@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import { format, isToday } from 'date-fns'
 
-import Tag from '../../ui/Tag'
+import { Tag } from '../../ui/Tag'
 import { Table } from '../../ui/Table'
 
 import { formatCurrency } from '../../utils/helpers'
@@ -46,6 +46,7 @@ interface BookingRowProps {
     numNights: number
     numGuests: number
     totalPrice: number
+    status: string | null
     Guests: {
       fullName: string
       email: string
