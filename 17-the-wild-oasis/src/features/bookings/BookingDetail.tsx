@@ -9,7 +9,7 @@ import { Button } from '../../ui/Button'
 import { ButtonText } from '../../ui/ButtonText'
 
 import { useMoveBack } from '../../hooks/useMoveBack'
-import { useParams } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { useBooking } from './useBooking'
 import { Spinner } from '../../ui/Spinner'
 import { Empty } from '../../ui/Empty'
@@ -21,6 +21,7 @@ const HeadingGroup = styled.div`
 `
 
 export const BookingDetail = () => {
+  const navigate = useNavigate()
   const moveBack = useMoveBack()
   const { bookingId } = useParams()
 
@@ -32,6 +33,10 @@ export const BookingDetail = () => {
     'checked-out': 'silver',
   }
 
+  const handleCheckInClick = () => {
+    navigate(`/checkin/${bookingId}`)
+  }
+
   if (isLoading) return <Spinner />
   if (!booking || error) return <Empty resourceName={'booking'} />
 
@@ -40,7 +45,7 @@ export const BookingDetail = () => {
       <Row type="horizontal">
         <HeadingGroup>
           <Heading as="h1">Booking #{booking.id}</Heading>
-          <Tag type={statusToTagName[booking.status]}>
+          <Tag color={statusToTagName[booking.status]}>
             {booking.status?.replace('-', ' ')}
           </Tag>
         </HeadingGroup>
@@ -50,6 +55,9 @@ export const BookingDetail = () => {
       <BookingDataBox booking={booking} />
 
       <ButtonGroup>
+        {booking.status === 'unconfirmed' && (
+          <Button onClick={handleCheckInClick}>Check in</Button>
+        )}
         <Button variation="secondary" onClick={moveBack}>
           Back
         </Button>

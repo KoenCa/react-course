@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 
 interface TagProps {
-  type: 'unconfirmed' | 'checked-in' | 'checked-out'
+  color: 'blue' | 'green' | 'silver'
 }
 
 export const Tag = styled.span<TagProps>`
@@ -13,6 +13,6 @@ export const Tag = styled.span<TagProps>`
   border-radius: 100px;
 
   /* Make these dynamic, based on the received prop */
-  color: var(--color-${props => props.type}-700);
-  background-color: var(--color-${props => props.type}-100);
+  color: var(--color-${props => props.color}-700);
+  background-color: var(--color-${props => props.color}-100);
 `

@@ -7,7 +7,7 @@ import { Table } from '../../ui/Table'
 import { formatCurrency } from '../../utils/helpers'
 import { formatDistanceFromNow } from '../../utils/helpers'
 import { Menus } from '../../ui/Menus'
-import { HiEye } from 'react-icons/hi2'
+import { HiArrowDownOnSquare, HiEye } from 'react-icons/hi2'
 import { useNavigate } from 'react-router-dom'
 
 const Cabin = styled.div`
@@ -81,6 +81,10 @@ export const BookingRow = ({
     navigate(`/bookings/${bookingId}`)
   }
 
+  const handleCheckInClick = () => {
+    navigate(`/checkin/${bookingId}`)
+  }
+
   return (
     <Table.Row>
       <Cabin>{cabinName}</Cabin>
@@ -103,7 +107,7 @@ export const BookingRow = ({
         </span>
       </Stacked>
 
-      <Tag type={statusToTagName[status]}>{status.replace('-', ' ')}</Tag>
+      <Tag color={statusToTagName[status]}>{status.replace('-', ' ')}</Tag>
 
       <Amount>{formatCurrency(totalPrice)}</Amount>
 
@@ -113,6 +117,15 @@ export const BookingRow = ({
           <Menus.Button icon={<HiEye />} onClick={handleDetailsClick}>
             See details
           </Menus.Button>
+
+          {status === 'unconfirmed' && (
+            <Menus.Button
+              icon={<HiArrowDownOnSquare />}
+              onClick={handleCheckInClick}
+            >
+              Check in
+            </Menus.Button>
+          )}
         </Menus.List>
       </Menus.Menu>
     </Table.Row>

@@ -105,8 +105,8 @@ interface BookingDataBoxProps {
   booking: {
     id: number
     created_at: string
-    startDate: string
-    endDate: string
+    startDate: string | null
+    endDate: string | null
     numNights: number
     numGuests: number
     cabinPrice: number
