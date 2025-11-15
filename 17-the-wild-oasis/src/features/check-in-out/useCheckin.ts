@@ -3,13 +3,28 @@ import { updateBooking } from '../../services/api/apiBookings'
 import toast from 'react-hot-toast'
 import { useNavigate } from 'react-router-dom'
 
+interface mutationFnArgumentObject {
+  bookingId: number
+  breakfast?:
+    | {
+        hasBreakfast: boolean
+        extrasPrice: number
+        totalPrice: number
+      }
+    | {}
+}
+
 export const useCheckin = () => {
   const navigate = useNavigate()
   const queryClient = useQueryClient()
 
   const { mutate: checkin, isPending: isCheckingIn } = useMutation({
-    mutationFn: (bookingId: number) =>
-      updateBooking(bookingId, { status: 'checked-in', isPaid: true }),
+    mutationFn: ({ bookingId, breakfast = {} }: mutationFnArgumentObject) =>
+      updateBooking(bookingId, {
+        status: 'checked-in',
+        isPaid: true,
+        ...breakfast,
+      }),
     onSuccess: checkedInBooking => {
       toast.success(`Booking #${checkedInBooking.id} successfully checked in`)
       queryClient.invalidateQueries({
