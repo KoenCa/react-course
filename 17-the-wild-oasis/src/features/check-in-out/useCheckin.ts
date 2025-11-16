@@ -28,7 +28,7 @@ export const useCheckin = () => {
     onSuccess: checkedInBooking => {
       toast.success(`Booking #${checkedInBooking.id} successfully checked in`)
       queryClient.invalidateQueries({
-        queryKey: [['booking', checkedInBooking.id], ['bookings']],
+        queryKey: ['bookings'],
       })
       navigate('/')
     },

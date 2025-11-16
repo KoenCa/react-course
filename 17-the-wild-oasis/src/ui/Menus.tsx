@@ -139,10 +139,12 @@ export const List = ({ id, children }: { id: number; children: ReactNode }) => {
 
 export const Button = ({
   icon,
+  disabled,
   onClick,
   children,
 }: {
   icon: ReactNode
+  disabled?: boolean
   onClick?: () => void
   children: ReactNode
 }) => {
@@ -155,7 +157,7 @@ export const Button = ({
 
   return (
     <li onClick={handleClick}>
-      <StyledButton>
+      <StyledButton disabled={disabled}>
         {icon}
         <span>{children}</span>
       </StyledButton>

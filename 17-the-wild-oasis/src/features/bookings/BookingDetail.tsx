@@ -13,6 +13,7 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { useBooking } from './useBooking'
 import { Spinner } from '../../ui/Spinner'
 import { Empty } from '../../ui/Empty'
+import { useCheckout } from '../check-in-out/useCheckout'
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -26,6 +27,7 @@ export const BookingDetail = () => {
   const { bookingId } = useParams()
 
   const { isLoading, error, booking } = useBooking(Number(bookingId))
+  const { checkout, isCheckingOut } = useCheckout()
 
   const statusToTagName = {
     unconfirmed: 'blue',
@@ -35,6 +37,10 @@ export const BookingDetail = () => {
 
   const handleCheckInClick = () => {
     navigate(`/checkin/${bookingId}`)
+  }
+
+  const handleCheckOutClick = () => {
+    checkout(Number(bookingId))
   }
 
   if (isLoading) return <Spinner />
@@ -58,6 +64,13 @@ export const BookingDetail = () => {
         {booking.status === 'unconfirmed' && (
           <Button onClick={handleCheckInClick}>Check in</Button>
         )}
+
+        {booking.status === 'checked-in' && (
+          <Button onClick={handleCheckOutClick} disabled={isCheckingOut}>
+            Check out
+          </Button>
+        )}
+
         <Button variation="secondary" onClick={moveBack}>
           Back
         </Button>

@@ -9,7 +9,7 @@ export const useBooking = (id: number | null | undefined) => {
     data: booking,
     error,
   } = useQuery({
-    queryKey: ['booking', id],
+    queryKey: ['bookings', id],
     queryFn: () => getBooking(id),
     retry: false,
   })
