@@ -107,7 +107,7 @@ export const CabinRow = ({ cabin }: CabinRowProps) => {
 
             <Modal.Window name="delete">
               <ConfirmDelete
-                resourceName="Cabins"
+                resourceName="cabin"
                 disabled={isDeleting}
                 onConfirm={() => deleteCabin(cabinId)}
               />

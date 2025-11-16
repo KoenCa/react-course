@@ -14,6 +14,9 @@ import { useBooking } from './useBooking'
 import { Spinner } from '../../ui/Spinner'
 import { Empty } from '../../ui/Empty'
 import { useCheckout } from '../check-in-out/useCheckout'
+import { Modal } from '../../ui/Modal'
+import { ConfirmDelete } from '../../ui/ConfirmDelete'
+import { useDeleteBooking } from './useDeleteBooking'
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -28,6 +31,7 @@ export const BookingDetail = () => {
 
   const { isLoading, error, booking } = useBooking(Number(bookingId))
   const { checkout, isCheckingOut } = useCheckout()
+  const { deleteBooking, isDeletingBooking } = useDeleteBooking()
 
   const statusToTagName = {
     unconfirmed: 'blue',
@@ -35,16 +39,24 @@ export const BookingDetail = () => {
     'checked-out': 'silver',
   }
 
+  if (isLoading) return <Spinner />
+  if (!booking || error) return <Empty resourceName={'booking'} />
+
   const handleCheckInClick = () => {
-    navigate(`/checkin/${bookingId}`)
+    navigate(`/checkin/${booking.id}`)
   }
 
   const handleCheckOutClick = () => {
-    checkout(Number(bookingId))
+    checkout(booking.id)
   }
 
-  if (isLoading) return <Spinner />
-  if (!booking || error) return <Empty resourceName={'booking'} />
+  const handleDeleteClick = () => {
+    deleteBooking(booking.id, {
+      onSuccess: () => {
+        navigate(-1)
+      },
+    })
+  }
 
   return (
     <>
@@ -70,6 +82,20 @@ export const BookingDetail = () => {
             Check out
           </Button>
         )}
+
+        <Modal>
+          <Modal.Open opens="delete">
+            <Button variation="danger">Delete</Button>
+          </Modal.Open>
+
+          <Modal.Window name="delete">
+            <ConfirmDelete
+              resourceName="booking"
+              disabled={isDeletingBooking}
+              onConfirm={handleDeleteClick}
+            />
+          </Modal.Window>
+        </Modal>
 
         <Button variation="secondary" onClick={moveBack}>
           Back
