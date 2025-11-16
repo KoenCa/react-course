@@ -47,6 +47,9 @@ export const Filter = ({ filterField, options }: FilterPros) => {
   const handleClick = (value: string) => {
     setSearchParams(prevSearchParams => {
       prevSearchParams.set(filterField, value)
+
+      if (prevSearchParams.get('page')) prevSearchParams.set('page', '1')
+
       return prevSearchParams
     })
   }
