@@ -17,7 +17,15 @@ export const LoginForm = () => {
 
     if (!email || !password) return;
 
-    login({ email, password });
+    login(
+      { email, password },
+      {
+        onSettled: () => {
+          setEmail("");
+          setPassword("");
+        },
+      },
+    );
   };
 
   return (
@@ -30,6 +38,7 @@ export const LoginForm = () => {
           autoComplete="username"
           value={email}
           disabled={isLoggingIn}
+          required
           onChange={(e) => setEmail(e.target.value)}
         />
       </FormRowVertical>
@@ -40,6 +49,7 @@ export const LoginForm = () => {
           autoComplete="current-password"
           value={password}
           disabled={isLoggingIn}
+          required
           onChange={(e) => setPassword(e.target.value)}
         />
       </FormRowVertical>

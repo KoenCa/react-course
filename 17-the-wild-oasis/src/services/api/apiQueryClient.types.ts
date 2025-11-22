@@ -1,10 +1,13 @@
-import '@tanstack/react-query'
+import "@tanstack/react-query";
 
-type QueryKey = ['cabins' | 'settings' | 'bookings', ...ReadonlyArray<unknown>]
+type QueryKey = [
+  "user" | "cabins" | "settings" | "bookings",
+  ...ReadonlyArray<unknown>,
+];
 
-declare module '@tanstack/react-query' {
+declare module "@tanstack/react-query" {
   interface Register {
-    queryKey: QueryKey
-    mutationKey: QueryKey
+    queryKey: QueryKey;
+    mutationKey: QueryKey;
   }
 }
