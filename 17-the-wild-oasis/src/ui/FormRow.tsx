@@ -1,10 +1,10 @@
-import type { ReactElement } from 'react'
-import styled from 'styled-components'
+import type { ReactElement } from "react";
+import styled from "styled-components";
 
 interface FormRowProps {
-  label?: string
-  error?: string
-  children: ReactElement<HTMLInputElement>
+  label?: string;
+  error?: string;
+  children: ReactElement<HTMLInputElement> | ReactElement<HTMLInputElement>[];
 }
 
 const StyledFormRow = styled.div`
@@ -32,23 +32,29 @@ const StyledFormRow = styled.div`
     justify-content: flex-end;
     gap: 1.2rem;
   }
-`
+`;
 
 const Label = styled.label`
   font-weight: 500;
-`
+`;
 
 const Error = styled.span`
   font-size: 1.4rem;
   color: var(--color-red-700);
-`
+`;
 
 export const FormRow = ({ label, error, children }: FormRowProps) => {
   return (
     <StyledFormRow>
-      {label && <Label htmlFor={children.props.id}>{label}</Label>}
-      {children}
-      {error && <Error>{error}</Error>}
+      {Array.isArray(children) ? (
+        children
+      ) : (
+        <>
+          {label && <Label htmlFor={children.props.id}>{label}</Label>}
+          {children}
+          {error && <Error>{error}</Error>}
+        </>
+      )}
     </StyledFormRow>
-  )
-}
+  );
+};
