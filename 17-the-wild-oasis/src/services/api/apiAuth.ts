@@ -1,9 +1,29 @@
 import { supabase } from "../supabase/supabase";
 
+interface ApiSignUpArgs {
+  fullName: string
+  email: string
+  password: string
+}
+
 export interface ApiLoginCredentials {
   email: string;
   password: string;
 }
+
+export const signUp = async ({ fullName, email, password }: ApiSignUpArgs) => {
+  const { data, error } =  await supabase.auth.signUp({
+    email,
+    password,
+    options: { data: { fullName, avatar: "" } },
+  });
+
+  if (error) {
+    throw new Error(error.message);
+  }
+
+  return data;
+};
 
 export const login = async ({ email, password }: ApiLoginCredentials) => {
   const { data, error } = await supabase.auth.signInWithPassword({
