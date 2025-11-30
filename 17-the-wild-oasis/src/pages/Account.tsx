@@ -1,5 +1,6 @@
-import { Heading } from '../ui/Heading'
-import { Row } from '../ui/Row'
+import { UpdateUserDataForm } from "../features/authentication/UpdateUserDataForm";
+import { Heading } from "../ui/Heading";
+import { Row } from "../ui/Row";
 
 export const Account = () => {
   return (
@@ -8,7 +9,7 @@ export const Account = () => {
 
       <Row>
         <Heading as="h3">Update user data</Heading>
-        <p>Update user data form</p>
+        <UpdateUserDataForm />
       </Row>
 
       <Row>
@@ -16,5 +17,5 @@ export const Account = () => {
         <p>Update user password form</p>
       </Row>
     </>
-  )
-}
+  );
+};
