@@ -36,6 +36,8 @@ export const SignUpForm = () => {
     },
   );
 
+  const handleFormReset = () => reset()
+
   return (
     <Form onSubmit={handleFormSubmit}>
       <FormRow label="Full name" error={errors.fullName?.message}>
@@ -91,7 +93,7 @@ export const SignUpForm = () => {
 
       <FormRow>
         {/* type is an HTML attribute! */}
-        <Button variation="secondary" type="reset">
+        <Button variation="secondary" type="reset" onClick={handleFormReset}>
           Cancel
         </Button>
         <Button>Create new user</Button>
