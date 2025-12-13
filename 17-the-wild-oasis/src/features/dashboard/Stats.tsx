@@ -7,7 +7,6 @@ import {
 import type { Database } from "../../services/supabase/database.types";
 import { Stat } from "./Stat";
 import { formatCurrency } from "../../utils/helpers";
-import { useLastNumberOfDays } from "./hooks/useLastNumberOfDays";
 
 interface Stats {
   bookings?: {
@@ -20,14 +19,14 @@ interface Stats {
       fullName: Database["public"]["Tables"]["Guests"]["Row"]["fullName"];
     } | null;
   })[];
-  numDays: number;
+  numberOfDays: number;
   cabinCount: number;
 }
 
 export const Stats = ({
   bookings,
   confirmedStays,
-  numDays,
+  numberOfDays,
   cabinCount,
 }: Stats) => {
   const numBookings = bookings?.length ?? 0;
@@ -41,7 +40,7 @@ export const Stats = ({
   const occupation = Math.round(
     ((confirmedStays?.reduce((acc, cur) => acc + (cur?.numNights ?? 0), 0) ??
       0) /
-      (numDays * cabinCount)) *
+      (numberOfDays * cabinCount)) *
       100,
   );
 

@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-const DashboardBox = styled.div`
+export const DashboardBox = styled.div`
   /* Box */
   background-color: var(--color-grey-0);
   border: 1px solid var(--color-grey-100);
@@ -12,5 +12,3 @@ const DashboardBox = styled.div`
   flex-direction: column;
   gap: 2.4rem;
 `;
-
-export default DashboardBox;
