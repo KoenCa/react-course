@@ -1,7 +1,8 @@
+
 import "@tanstack/react-query";
 
 type QueryKey = [
-  "user" | "cabins" | "settings" | "bookings",
+  "user" | "cabins" | "settings" | "bookings" | "stays",
   ...ReadonlyArray<unknown>,
 ];
 
