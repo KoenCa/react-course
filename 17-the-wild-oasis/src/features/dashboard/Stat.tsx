@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import styled from "styled-components";
 
 const StyledStat = styled.div`
@@ -47,7 +48,14 @@ const Value = styled.p`
   font-weight: 500;
 `;
 
-function Stat({ icon, title, value, color }) {
+interface Stat {
+  icon: ReactNode;
+  title: string;
+  value: ReactNode;
+  color: string;
+}
+
+export const Stat = ({ icon, title, value, color }: Stat) => {
   return (
     <StyledStat>
       <Icon color={color}>{icon}</Icon>
@@ -55,6 +63,4 @@ function Stat({ icon, title, value, color }) {
       <Value>{value}</Value>
     </StyledStat>
   );
-}
-
-export default Stat;
+};
