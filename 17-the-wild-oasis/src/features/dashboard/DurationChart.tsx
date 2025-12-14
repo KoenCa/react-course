@@ -1,4 +1,15 @@
 import styled from "styled-components";
+import type { Database } from "../../services/supabase/database.types";
+import { Heading } from "../../ui/Heading";
+import {
+  Cell,
+  Legend,
+  Pie,
+  PieChart,
+  ResponsiveContainer,
+  Tooltip,
+} from "recharts";
+import { useDarkMode } from "../../context/DarkModeContext";
 
 const ChartBox = styled.div`
   /* Box */
@@ -104,18 +115,32 @@ const startDataDark = [
   },
 ];
 
-function prepareData(startData, stays) {
+const prepareData = (
+  startData: { duration: string; value: number; color: string }[],
+  stays?: (Database["public"]["Tables"]["Bookings"]["Row"] & {
+    Guests: {
+      fullName: Database["public"]["Tables"]["Guests"]["Row"]["fullName"];
+    } | null;
+  })[],
+) => {
   // A bit ugly code, but sometimes this is what it takes when working with real data 😅
 
-  function incArrayValue(arr, field) {
+  const incArrayValue = (
+    arr: {
+      duration: string;
+      value: number;
+      color: string;
+    }[],
+    field: string,
+  ) => {
     return arr.map((obj) =>
-      obj.duration === field ? { ...obj, value: obj.value + 1 } : obj
+      obj.duration === field ? { ...obj, value: obj.value + 1 } : obj,
     );
-  }
+  };
 
   const data = stays
-    .reduce((arr, cur) => {
-      const num = cur.numNights;
+    ?.reduce((arr, cur) => {
+      const num = cur.numNights ?? 0;
       if (num === 1) return incArrayValue(arr, "1 night");
       if (num === 2) return incArrayValue(arr, "2 nights");
       if (num === 3) return incArrayValue(arr, "3 nights");
@@ -129,4 +154,55 @@ function prepareData(startData, stays) {
     .filter((obj) => obj.value > 0);
 
   return data;
+};
+
+interface DurationChart {
+  confirmedStays?: (Database["public"]["Tables"]["Bookings"]["Row"] & {
+    Guests: {
+      fullName: Database["public"]["Tables"]["Guests"]["Row"]["fullName"];
+    } | null;
+  })[];
 }
+
+export const DurationChart = ({ confirmedStays }: DurationChart) => {
+  const { isDarkMode } = useDarkMode();
+
+  const startData = isDarkMode ? startDataDark : startDataLight;
+  const chartData = prepareData(startData, confirmedStays);
+
+  return (
+    <ChartBox>
+      <Heading as="h2">Stay duration summary</Heading>
+      <ResponsiveContainer minHeight={240} height="100%" width="100%">
+        <PieChart>
+          <Pie
+            data={chartData}
+            nameKey="duration"
+            dataKey="value"
+            innerRadius={85}
+            outerRadius={110}
+            cx="40%"
+            cy="50%"
+            paddingAngle={3}
+          >
+            {chartData?.map((entry) => (
+              <Cell
+                key={entry.duration}
+                fill={entry.color}
+                stroke={entry.color}
+              />
+            ))}
+          </Pie>
+          <Tooltip />
+          <Legend
+            verticalAlign="middle"
+            align="right"
+            layout="vertical"
+            iconSize={15}
+            iconType="circle"
+          />
+        </PieChart>
+      </ResponsiveContainer>
+    </ChartBox>
+  );
+};
