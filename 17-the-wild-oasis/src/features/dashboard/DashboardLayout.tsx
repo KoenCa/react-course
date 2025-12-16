@@ -7,6 +7,7 @@ import { useLastNumberOfDays } from "./hooks/useLastNumberOfDays";
 import { useListCabins } from "../cabins/useListCabins";
 import { SalesCharts } from "./SalesChart";
 import { DurationChart } from "./DurationChart";
+import { TodayActivity } from "../check-in-out/TodayActivity";
 
 const StyledDashboardLayout = styled.div`
   display: grid;
@@ -18,7 +19,7 @@ const StyledDashboardLayout = styled.div`
 export const DashboardLayout = () => {
   const numberOfDays = useLastNumberOfDays();
   const { recentBookings, isLoadingRecentBookings } = useRecentBookings();
-  const { recentStays, confirmedRecentStays, isLoadingRecentStays } =
+  const { confirmedRecentStays, isLoadingRecentStays } =
     useRecentStays();
   const { cabins, isLoadingCabins } = useListCabins();
 
@@ -33,6 +34,7 @@ export const DashboardLayout = () => {
         numberOfDays={numberOfDays}
         cabinCount={cabins?.length ?? 0}
       />
+      <TodayActivity />
       <DurationChart confirmedStays={confirmedRecentStays} />
       <SalesCharts bookings={recentBookings} numberOfDays={numberOfDays} />
     </StyledDashboardLayout>
