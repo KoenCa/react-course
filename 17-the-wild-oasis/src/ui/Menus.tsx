@@ -105,6 +105,10 @@ export const Toggle = ({ id }: { id: number }) => {
   const { openId, close, open, setPosition } = useContext(MenuContext)
 
   const handleClick = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+
+    // Stop bubbling of event so that the useClickOutside doesn't get triggered when clicking the menu toggle
+    e.stopPropagation()
+
     const rect = e.target.closest('button').getBoundingClientRect()
 
     setPosition({
@@ -125,7 +129,12 @@ export const Toggle = ({ id }: { id: number }) => {
 export const List = ({ id, children }: { id: number; children: ReactNode }) => {
   const { openId, position, close } = useContext(MenuContext)
   const isListOpen = openId === id
-  const elRef = useClickOutside<HTMLUListElement>(close, isListOpen)
+
+  const elRef = useClickOutside<HTMLUListElement>({
+    onClickOutside: close,
+    listenCapturing: false,
+    shouldCheckForClicks: isListOpen
+  })
 
   if (openId !== id) return null
 

@@ -1,24 +1,39 @@
-import { useEffect, useRef } from 'react'
+import { useEffect, useRef } from "react";
 
-export const useClickOutside = <T>(
-  handler: () => void,
-  shouldCheckForClicks = false
-) => {
-  const ref = useRef<T>(null)
+/**
+ * This hook returns a ref that should be set on the element for which clicks will be checked. When the clicked DOM element
+ * is outside of the referenced element then the onClickOutside callback is called.
+ *
+ * @param {Object} config - The config object for this hook
+ * @param config.onClickOutside - Callback function that is called when click outside ref element is detected.
+ * @param config.listenCapturing - Determines if the event listeners should be triggered on the capture phase or the default bubbling phase
+ * @param config.shouldCheckForClicks - Determines if the event listeners are set or not. When elements are in a closed state the event listeners should not be triggered.
+ */
+export const useClickOutside = <T>({
+  onClickOutside,
+  listenCapturing = true,
+  shouldCheckForClicks = false,
+}: {
+  onClickOutside: () => void;
+  listenCapturing: boolean;
+  shouldCheckForClicks: boolean;
+}) => {
+  const ref = useRef<T>(null);
 
   useEffect(() => {
-    if (!shouldCheckForClicks) return
+    if (!shouldCheckForClicks) return;
 
     const handleClick = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target)) {
-        handler()
+        onClickOutside();
       }
-    }
+    };
 
-    document.addEventListener('click', handleClick, true)
+    document.addEventListener("click", handleClick, listenCapturing);
 
-    return () => document.removeEventListener('click', handleClick, true)
-  }, [handler])
+    return () =>
+      document.removeEventListener("click", handleClick, listenCapturing);
+  }, [onClickOutside]);
 
-  return ref
-}
+  return ref;
+};
