@@ -1,0 +1,21 @@
+{
+  "name": "20-manual-ssr",
+  "version": "1.0.0",
+  "description": "",
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "@babel/core": "^7.28.6",
+    "@babel/preset-env": "^7.28.6",
+    "@babel/preset-react": "^7.28.5",
+    "@babel/register": "^7.28.6",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4"
+  }
+}
