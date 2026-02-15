@@ -1,3 +1,9 @@
-export default function Cabins() {
-  return <h1>Cabins</h1>;
+
+export default async function Cabins() {
+  return (
+    <div>
+      <h1>Cabins</h1>
+
+    </div>
+  );
 }

@@ -1,3 +1,4 @@
+import "@/styles/globals.css";
 import type { Metadata } from "next";
 import Navigation from "@/components/Navigation";
 import Logo from "@/components/Logo";
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 export default function Root({ children }: LayoutProps<"/">) {
   return (
     <html lang="en">
-      <body>
+      <body className="bg-primary-950 text-primary-100 min-h-screen">
         <header>
           <Logo />
           <Navigation />
