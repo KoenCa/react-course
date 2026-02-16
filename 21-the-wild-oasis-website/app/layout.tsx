@@ -3,6 +3,13 @@ import type { Metadata } from "next";
 import Navigation from "@/components/Navigation";
 import Logo from "@/components/Logo";
 
+import { Josefin_Sans } from "next/font/google";
+
+const josefin = Josefin_Sans({
+  subsets: ["latin"],
+  display: "swap",
+});
+
 export const metadata: Metadata = {
   title: {
     template: "%s / The Wild Oasis",
@@ -15,7 +22,9 @@ export const metadata: Metadata = {
 export default function Root({ children }: LayoutProps<"/">) {
   return (
     <html lang="en">
-      <body className="bg-primary-950 text-primary-100 min-h-screen">
+      <body
+        className={`${josefin.className} bg-primary-950 text-primary-100 min-h-screen`}
+      >
         <header>
           <Logo />
           <Navigation />
