@@ -1,6 +1,10 @@
 import Link from "next/link";
 import { ReservationCard } from "@/components/ReservationCard";
 
+export const metadata: Metadata = {
+  title: "Reservations",
+};
+
 export default function Reservations() {
   const bookings = [];
 

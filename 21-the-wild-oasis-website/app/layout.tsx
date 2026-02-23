@@ -26,8 +26,9 @@ export default function Root({ children }: LayoutProps<"/">) {
       >
         <Header />
 
-        <div className="flex-1 px-8 py-12">
-          <main className="mx-auto max-w-7xl">{children}</main>
+        {/* grid so that all remaining vertical space is taken */}
+        <div className="grid flex-1 px-8 py-12">
+          <main className="mx-auto max-w-7xl w-full">{children}</main>
         </div>
       </body>
     </html>

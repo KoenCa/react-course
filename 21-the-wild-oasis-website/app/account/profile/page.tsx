@@ -1,4 +1,9 @@
+import type { Metadata } from "next";
 import { SelectCountry } from "@/components/SelectCountry";
+
+export const metadata: Metadata = {
+  title: "Update profile",
+};
 
 export default function Profile() {
   const countryflag = "pt.jpg";
