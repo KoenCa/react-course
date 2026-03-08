@@ -1,14 +1,23 @@
+import type { Metadata } from "next";
 import { getCabin } from "@/lib/data-service";
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 
-export default async function CabinDetails({
+type pageProps = PageProps<"/cabins/[cabinId]">;
+
+export async function generateMetadata({
   params,
-}: PageProps<"/cabins/[cabinId]">) {
+}: pageProps): Promise<Metadata> {
   const { cabinId } = await params;
-  const cabin = await getCabin(cabinId);
+  const { name } = await getCabin(cabinId);
+
+  return { title: `Cabin ${name}` };
+}
+
+export default async function CabinDetails({ params }: pageProps) {
+  const { cabinId } = await params;
   const { id, name, maxCapacity, regularPrice, discount, image, description } =
-    cabin;
+    await getCabin(cabinId);
 
   return (
     <div className="max-w-6xl mx-auto mt-8">
