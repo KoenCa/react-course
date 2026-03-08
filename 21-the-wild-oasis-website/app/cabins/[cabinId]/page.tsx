@@ -16,8 +16,7 @@ export async function generateMetadata({
 
 export default async function CabinDetails({ params }: pageProps) {
   const { cabinId } = await params;
-  const { id, name, maxCapacity, regularPrice, discount, image, description } =
-    await getCabin(cabinId);
+  const { name, maxCapacity, image, description } = await getCabin(cabinId);
 
   return (
     <div className="max-w-6xl mx-auto mt-8">
