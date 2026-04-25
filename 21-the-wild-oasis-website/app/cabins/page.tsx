@@ -1,4 +1,5 @@
 import { CabinList } from "@/components/CabinList";
+import { Filter } from "@/components/Filter";
 import { Spinner } from "@/components/Spinner";
 import { Metadata } from "next";
 import { Suspense } from "react";
@@ -7,7 +8,9 @@ export const metadata: Metadata = {
   title: "Cabins",
 };
 
-export default function Cabins() {
+export default async function Cabins({ searchParams }: PageProps<"/cabins">) {
+  const { capacity = "all" } = await searchParams;
+
   return (
     <main>
       <h1 className="text-4xl mb-5 text-accent-400 font-medium">Cabins</h1>
@@ -20,8 +23,12 @@ export default function Cabins() {
         Welcome to paradise.
       </p>
 
-      <Suspense fallback={<Spinner />}>
-        <CabinList />
+      <div className="flex justify-end mb-8">
+        <Filter />
+      </div>
+
+      <Suspense key={capacity} fallback={<Spinner />}>
+        <CabinList filter={capacity} />
       </Suspense>
     </main>
   );
