@@ -7,7 +7,7 @@ import { ReactNode } from "react";
 
 type CapacityFilter = "all" | "small" | "medium" | "large";
 
-export function Filter() {
+export function CabinListFilter() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const pathName = usePathname();

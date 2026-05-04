@@ -1,4 +1,4 @@
-import { getCountries } from "@/lib/data-service";
+import { getCountries } from "@/src/shared/lib/data-service";
 
 interface SelectCountry {
   id: string;

@@ -2,7 +2,7 @@ import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import about1 from "@/public/about-1.jpg";
-import { getAmountOfCabins } from "@/lib/data-service";
+import { getAmountOfCabins } from "@/src/shared/lib/data-service";
 
 export const metadata: Metadata = {
   title: "About",

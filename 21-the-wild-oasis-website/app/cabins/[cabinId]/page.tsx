@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import { getCabin, getCabins } from "@/lib/data-service";
-import { Reservation } from "@/components/Reservation";
+import { getCabin, getCabins } from "@/src/shared/lib/data-service";
+import { CabinDetailsReservation } from "@/src/cabins/CabinDetailsReservation";
 import { Suspense } from "react";
-import { Spinner } from "@/components/Spinner";
-import { CabinDetails } from "@/components/Cabin";
+import { Spinner } from "@/src/shared/components/Spinner";
+import { CabinDetails } from "@/src/cabins/CabinDetails";
 
 type pageProps = PageProps<"/cabins/[cabinId]">;
 
@@ -37,7 +37,7 @@ export default async function PageCabinDetails({ params }: pageProps) {
         </h2>
 
         <Suspense fallback={<Spinner />}>
-          <Reservation cabin={cabin} />
+          <CabinDetailsReservation cabin={cabin} />
         </Suspense>
       </div>
     </div>

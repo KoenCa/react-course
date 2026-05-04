@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import Logo from "./Logo";
+import Logo from "../shared/components/Logo";
 
-export function TextExpander({ children }: { children: string }) {
+export function CabinDetailsTextExpander({ children }: { children: string }) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const displayText = isExpanded

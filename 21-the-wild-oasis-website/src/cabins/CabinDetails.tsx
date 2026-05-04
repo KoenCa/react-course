@@ -1,6 +1,6 @@
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
-import { TextExpander } from "@/components/TextExpander";
+import { CabinDetailsTextExpander } from "@/src/cabins/CabinDetailsTextExpander";
 
 export function CabinDetails({ cabin }) {
   const { name, maxCapacity, image, description } = cabin;
@@ -22,7 +22,7 @@ export function CabinDetails({ cabin }) {
         </h3>
 
         <p className="text-lg text-primary-300 mb-10">
-          <TextExpander>{description}</TextExpander>
+          <CabinDetailsTextExpander>{description}</CabinDetailsTextExpander>
         </p>
 
         <ul className="flex flex-col gap-4 mb-7">

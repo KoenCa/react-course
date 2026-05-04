@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import { UpdateProfileForm } from "@/components/UpdateProfileForm";
-import { SelectCountry } from "@/components/SelectCountry";
+import { UpdateProfileForm } from "@/src/account/UpdateProfileForm";
+import { SelectCountry } from "@/src/account/SelectCountry";
 
 export const metadata: Metadata = {
   title: "Update profile",

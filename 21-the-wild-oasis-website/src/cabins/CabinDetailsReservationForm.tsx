@@ -1,4 +1,4 @@
-export function ReservationForm({ cabin }) {
+export function CabinDetailsReservationForm({ cabin }) {
   // CHANGE
   const { maxCapacity } = cabin;
 

@@ -13,7 +13,11 @@ function isAlreadyBooked(range, datesArr) {
   );
 }
 
-export function DateSelector({ settings, bookedDates, cabin }) {
+export function CabinDetailsReservationCalendar({
+  settings,
+  bookedDates,
+  cabin,
+}) {
   const { regularPrice, discount, numNights, cabinPrice } = cabin;
   const range = { from: null, to: null };
   const { minBookingLength, maxBookingLength } = settings;

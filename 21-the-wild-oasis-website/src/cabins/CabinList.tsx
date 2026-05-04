@@ -1,5 +1,5 @@
-import { CabinCard } from "@/components/CabinCard";
-import { getCabins } from "@/lib/data-service";
+import { CabinListCard } from "./CabinListCard";
+import { getCabins } from "@/src/shared/lib/data-service";
 
 interface CabinListProps {
   filter: "all" | "small" | "medium" | "large";
@@ -27,7 +27,7 @@ export async function CabinList({ filter }: CabinListProps) {
   return (
     <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 xl:gap-14">
       {displayedCabins.map((cabin) => (
-        <CabinCard key={cabin.id} cabin={cabin} />
+        <CabinListCard key={cabin.id} cabin={cabin} />
       ))}
     </div>
   );

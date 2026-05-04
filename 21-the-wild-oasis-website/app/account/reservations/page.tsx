@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ReservationCard } from "@/components/ReservationCard";
+import { ReservationCard } from "@/src/account/ReservationCard";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {

@@ -1,4 +1,4 @@
-import { SideNavigation } from "@/components/SideNavigation";
+import { SideNavigation } from "@/src/shared/components/SideNavigation";
 
 export default function AccountLayout({ children }: LayoutProps<"/account">) {
   return (

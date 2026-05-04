@@ -1,6 +1,6 @@
-import { CabinList } from "@/components/CabinList";
-import { Filter } from "@/components/Filter";
-import { Spinner } from "@/components/Spinner";
+import { CabinList } from "@/src/cabins/CabinList";
+import { CabinListFilter } from "@/src/cabins/CabinListFilter";
+import { Spinner } from "@/src/shared/components/Spinner";
 import { Metadata } from "next";
 import { Suspense } from "react";
 
@@ -24,7 +24,7 @@ export default async function Cabins({ searchParams }: PageProps<"/cabins">) {
       </p>
 
       <div className="flex justify-end mb-8">
-        <Filter />
+        <CabinListFilter />
       </div>
 
       <Suspense key={capacity} fallback={<Spinner />}>
