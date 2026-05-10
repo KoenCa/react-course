@@ -1,5 +1,6 @@
 import { CabinList } from "@/src/cabins/CabinList";
 import { CabinListFilter } from "@/src/cabins/CabinListFilter";
+import { CabinDetailsReservationReminder } from "@/src/cabins/CabinReservationReminder";
 import { Spinner } from "@/src/shared/components/Spinner";
 import { Metadata } from "next";
 import { Suspense } from "react";
@@ -29,6 +30,7 @@ export default async function Cabins({ searchParams }: PageProps<"/cabins">) {
 
       <Suspense key={capacity} fallback={<Spinner />}>
         <CabinList filter={capacity} />
+        <CabinDetailsReservationReminder />
       </Suspense>
     </main>
   );

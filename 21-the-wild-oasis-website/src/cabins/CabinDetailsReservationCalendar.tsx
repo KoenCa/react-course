@@ -2,6 +2,7 @@
 
 import { isWithinInterval } from "date-fns";
 import { DayPicker } from "react-day-picker";
+import { useCabinDetailsReservation } from "./CabinDetailsReservationContext";
 
 function isAlreadyBooked(range, datesArr) {
   return (
@@ -18,8 +19,9 @@ export function CabinDetailsReservationCalendar({
   bookedDates,
   cabin,
 }) {
+  const { range, setRange, resetRange } = useCabinDetailsReservation();
+
   const { regularPrice, discount, numNights, cabinPrice } = cabin;
-  const range = { from: null, to: null };
   const { minBookingLength, maxBookingLength } = settings;
 
   return (
@@ -35,6 +37,8 @@ export function CabinDetailsReservationCalendar({
         captionLayout="dropdown"
         numberOfMonths={2}
         hideNavigation
+        selected={range}
+        onSelect={setRange}
       />
 
       <div className="flex items-center justify-between px-8 bg-accent-500 text-primary-800 h-18">
@@ -65,10 +69,10 @@ export function CabinDetailsReservationCalendar({
           ) : null}
         </div>
 
-        {range.from || range.to ? (
+        {range?.from || range?.to ? (
           <button
             className="border border-primary-800 py-2 px-4 text-sm font-semibold"
-            onClick={() => resetRange()}
+            onClick={resetRange}
           >
             Clear
           </button>

@@ -3,6 +3,7 @@ import type { Metadata } from "next";
 
 import { Josefin_Sans } from "next/font/google";
 import { Header } from "@/src/shared/components/Header";
+import { CabinDetailsReservationProvider } from "@/src/cabins/CabinDetailsReservationContext";
 
 const josefin = Josefin_Sans({
   subsets: ["latin"],
@@ -28,7 +29,11 @@ export default function Root({ children }: LayoutProps<"/">) {
 
         {/* grid so that all remaining vertical space is taken */}
         <div className="grid flex-1 px-8 py-12">
-          <main className="mx-auto max-w-7xl w-full">{children}</main>
+          <main className="mx-auto max-w-7xl w-full">
+            <CabinDetailsReservationProvider>
+              {children}
+            </CabinDetailsReservationProvider>
+          </main>
         </div>
       </body>
     </html>
